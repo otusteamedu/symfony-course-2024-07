@@ -3,3 +3,7 @@ controllers:
         path: ../src/Controller/
         namespace: App\Controller
     type: attribute
+
+hello_world:
+    path: /world/hello
+    controller: App\Controller\WorldController::hello
