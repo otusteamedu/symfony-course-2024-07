@@ -39,3 +39,7 @@ services:
         class: App\Domain\Service\FormatService
         factory: ['@App\Domain\Service\FormatServiceFactory', 'headerFormatService']
         arguments: [1]
+
+    App\Controller\WorldController:
+        arguments:
+            $formatService: '@cite_formatter'
