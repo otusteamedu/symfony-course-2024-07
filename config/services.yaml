@@ -22,3 +22,54 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+
+    strong_formatter:
+        class: App\Domain\Service\FormatService
+        factory: ['App\Domain\Service\FormatServiceFactory', 'strongFormatService']
+        tags: ['app.formatter_service']
+
+    cite_formatter:
+        class: App\Domain\Service\FormatService
+        factory: ['@App\Domain\Service\FormatServiceFactory', 'citeFormatService']
+        tags: ['app.formatter_service']
+
+    main_header_formatter:
+        class: App\Domain\Service\FormatService
+        factory: ['@App\Domain\Service\FormatServiceFactory', 'headerFormatService']
+        arguments: [1]
+
+    hello_greeter:
+        class: App\Domain\Service\GreeterService
+        arguments:
+            $greet: 'Hello'
+        tags:
+            - { name: 'app.greeter_service', priority: 3 }
+
+    greetings_greeter:
+        class: App\Domain\Service\GreeterService
+        arguments:
+            $greet: 'Greetings'
+        tags:
+            - { name: 'app.greeter_service', priority: 2 }
+
+    hi_greeter:
+        class: App\Domain\Service\GreeterService
+        arguments:
+            $greet: 'Hi'
+        tags:
+            - { name: 'app.greeter_service', priority: 1 }
+
+    list_formatter:
+        class: App\Domain\Service\FormatService
+        calls:
+            - [setTag, ['ol']]
+
+    list_item_formatter:
+        class: App\Domain\Service\FormatService
+        calls:
+            - [setTag, ['li']]
+        tags: ['app.formatter_service']
+
+    App\Controller\WorldController:
+        arguments:
+            $formatService: '@list_formatter'
