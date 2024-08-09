@@ -2,12 +2,24 @@
 
 namespace App\Controller;
 
+use App\Domain\Service\FormatService;
+use App\Domain\Service\MessageService;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 
-class WorldController
+class WorldController extends AbstractController
 {
+    public function __construct(
+        private readonly FormatService $formatService,
+        private readonly MessageService $messageService,
+    )
+    {
+    }
+
     public function hello(): Response
     {
-        return new Response('<html><body><h1><b>Hello,</b> <i>world</i>!</h1></body></html>');
+        $result = $this->formatService->format($this->messageService->printMessages('world'));
+
+        return new Response("<html><body>$result</body></html>");
     }
 }
