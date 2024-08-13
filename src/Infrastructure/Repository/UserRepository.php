@@ -13,4 +13,10 @@ class UserRepository extends AbstractRepository
     {
         return $this->store($user);
     }
+
+    public function subscribeUser(User $author, User $follower): void
+    {
+        $author->addFollower($follower);
+        $this->flush();
+    }
 }

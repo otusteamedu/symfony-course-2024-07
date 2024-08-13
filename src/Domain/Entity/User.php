@@ -28,9 +28,20 @@ class User implements EntityInterface
     #[ORM\OneToMany(targetEntity: Tweet::class, mappedBy: 'author')]
     private Collection $tweets;
 
+    #[ORM\ManyToMany(targetEntity: 'User', mappedBy: 'followers')]
+    private Collection $authors;
+
+    #[ORM\ManyToMany(targetEntity: 'User', inversedBy: 'authors')]
+    #[ORM\JoinTable(name: 'author_follower')]
+    #[ORM\JoinColumn(name: 'author_id', referencedColumnName: 'id')]
+    #[ORM\InverseJoinColumn(name: 'follower_id', referencedColumnName: 'id')]
+    private Collection $followers;
+
     public function __construct()
     {
         $this->tweets = new ArrayCollection();
+        $this->authors = new ArrayCollection();
+        $this->followers = new ArrayCollection();
     }
 
     public function getId(): int
@@ -76,6 +87,13 @@ class User implements EntityInterface
         }
     }
 
+    public function addFollower(User $follower): void
+    {
+        if (!$this->followers->contains($follower)) {
+            $this->followers->add($follower);
+        }
+    }
+
     public function toArray(): array
     {
         return [
@@ -84,6 +102,8 @@ class User implements EntityInterface
             'createdAt' => $this->createdAt->format('Y-m-d H:i:s'),
             'updatedAt' => $this->updatedAt->format('Y-m-d H:i:s'),
             'tweets' => array_map(static fn(Tweet $tweet) => $tweet->toArray(), $this->tweets->toArray()),
+            'followers' => array_map(static fn(User $user) => $user->getLogin(), $this->followers->toArray()),
+            'authors' => array_map(static fn(User $user) => $user->getLogin(), $this->authors->toArray()),
         ];
     }
 }

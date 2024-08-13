@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Domain\Entity\User;
 use App\Domain\Service\UserBuilderService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -14,11 +15,11 @@ class WorldController extends AbstractController
 
     public function hello(): Response
     {
-        $user = $this->userBuilderService->createUserWithTweets(
+        $users = $this->userBuilderService->createUserWithFollower(
             'J.R.R. Tolkien',
-            ['The Hobbit', 'The Lord of the Rings']
+            'Ivan Ivanov'
         );
 
-        return $this->json($user->toArray());
+        return $this->json(array_map(static fn(User $user) => $user->toArray(), $users));
     }
 }

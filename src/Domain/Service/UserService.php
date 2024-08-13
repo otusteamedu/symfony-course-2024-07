@@ -26,4 +26,9 @@ class UserService
     {
         $this->userRepository->refresh($user);
     }
+
+    public function subscribeUser(User $author, User $follower): void
+    {
+        $this->userRepository->subscribeUser($author, $follower);
+    }
 }
