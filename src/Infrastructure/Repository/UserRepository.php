@@ -20,4 +20,12 @@ class UserRepository extends AbstractRepository
         $follower->addAuthor($author);
         $this->flush();
     }
+
+    /**
+     * @return User[]
+     */
+    public function findUsersByLogin(string $name): array
+    {
+        return $this->entityManager->getRepository(User::class)->findBy(['login' => $name]);
+    }
 }
