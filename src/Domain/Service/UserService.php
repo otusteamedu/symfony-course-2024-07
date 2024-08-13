@@ -21,4 +21,9 @@ class UserService
 
         return $user;
     }
+
+    public function refresh(User $user): void
+    {
+        $this->userRepository->refresh($user);
+    }
 }

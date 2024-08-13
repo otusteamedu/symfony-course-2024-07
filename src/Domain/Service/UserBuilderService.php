@@ -21,6 +21,7 @@ class UserBuilderService
         foreach ($texts as $text) {
             $this->tweetService->postTweet($user, $text);
         }
+        $this->userService->refresh($user);
 
         return $user;
     }
