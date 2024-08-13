@@ -39,4 +39,12 @@ class UserService
     {
         return $this->userRepository->findUsersByLogin($login);
     }
+
+    /**
+     * @return User[]
+     */
+    public function findUsersByLoginWithCriteria(string $login): array
+    {
+        return $this->userRepository->findUsersByLoginWithCriteria($login);
+    }
 }
