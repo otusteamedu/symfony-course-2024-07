@@ -37,11 +37,19 @@ class User implements EntityInterface
     #[ORM\InverseJoinColumn(name: 'follower_id', referencedColumnName: 'id')]
     private Collection $followers;
 
+    #[ORM\OneToMany(mappedBy: 'follower', targetEntity: 'Subscription')]
+    private Collection $subscriptionAuthors;
+
+    #[ORM\OneToMany(mappedBy: 'author', targetEntity: 'Subscription')]
+    private Collection $subscriptionFollowers;
+
     public function __construct()
     {
         $this->tweets = new ArrayCollection();
         $this->authors = new ArrayCollection();
         $this->followers = new ArrayCollection();
+        $this->subscriptionAuthors = new ArrayCollection();
+        $this->subscriptionFollowers = new ArrayCollection();
     }
 
     public function getId(): int
@@ -101,6 +109,20 @@ class User implements EntityInterface
         }
     }
 
+    public function addSubscriptionAuthor(Subscription $subscription): void
+    {
+        if (!$this->subscriptionAuthors->contains($subscription)) {
+            $this->subscriptionAuthors->add($subscription);
+        }
+    }
+
+    public function addSubscriptionFollower(Subscription $subscription): void
+    {
+        if (!$this->subscriptionFollowers->contains($subscription)) {
+            $this->subscriptionFollowers->add($subscription);
+        }
+    }
+
     public function toArray(): array
     {
         return [
@@ -109,8 +131,30 @@ class User implements EntityInterface
             'createdAt' => $this->createdAt->format('Y-m-d H:i:s'),
             'updatedAt' => $this->updatedAt->format('Y-m-d H:i:s'),
             'tweets' => array_map(static fn(Tweet $tweet) => $tweet->toArray(), $this->tweets->toArray()),
-            'followers' => array_map(static fn(User $user) => $user->getLogin(), $this->followers->toArray()),
-            'authors' => array_map(static fn(User $user) => $user->getLogin(), $this->authors->toArray()),
+            'followers' => array_map(
+                static fn(User $user) => ['id' => $user->getId(), 'login' => $user->getLogin()],
+                $this->followers->toArray()
+            ),
+            'authors' => array_map(
+                static fn(User $user) => ['id' => $user->getId(), 'login' => $user->getLogin()],
+                $this->authors->toArray()
+            ),
+            'subscriptionFollowers' => array_map(
+                static fn(Subscription $subscription) => [
+                    'subscriptionId' => $subscription->getId(),
+                    'userId' => $subscription->getFollower()->getId(),
+                    'login' => $subscription->getFollower()->getLogin(),
+                ],
+                $this->subscriptionFollowers->toArray()
+            ),
+            'subscriptionAuthors' => array_map(
+                static fn(Subscription $subscription) => [
+                    'subscriptionId' => $subscription->getId(),
+                    'userId' => $subscription->getAuthor()->getId(),
+                    'login' => $subscription->getAuthor()->getLogin(),
+                ],
+                $this->subscriptionAuthors->toArray()
+            ),
         ];
     }
 }
