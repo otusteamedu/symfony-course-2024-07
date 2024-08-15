@@ -61,4 +61,15 @@ class UserService
     {
         return $this->userRepository->findUsersByLoginWithQueryBuilder($login);
     }
+
+    public function updateUserLoginWithQueryBuilder(int $userId, string $login): ?User
+    {
+        $user = $this->userRepository->find($userId);
+        if (!($user instanceof User)) {
+            return null;
+        }
+        $this->userRepository->updateUserLoginWithQueryBuilder($user->getId(), $login);
+
+        return $user;
+    }
 }
