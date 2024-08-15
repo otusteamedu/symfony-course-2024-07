@@ -56,4 +56,9 @@ class UserService
 
         return $user;
     }
+
+    public function findUsersByLoginWithQueryBuilder(string $login): array
+    {
+        return $this->userRepository->findUsersByLoginWithQueryBuilder($login);
+    }
 }
