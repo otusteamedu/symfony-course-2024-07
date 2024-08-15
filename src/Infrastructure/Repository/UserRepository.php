@@ -42,4 +42,19 @@ class UserRepository extends AbstractRepository
 
         return $repository->matching($criteria)->toArray();
     }
+
+    public function find(int $userId): ?User
+    {
+        $repository = $this->entityManager->getRepository(User::class);
+        /** @var User|null $user */
+        $user = $repository->find($userId);
+
+        return $user;
+    }
+
+    public function updateLogin(User $user, string $login): void
+    {
+        $user->setLogin($login);
+        $this->flush();
+    }
 }

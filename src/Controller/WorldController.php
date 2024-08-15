@@ -15,8 +15,9 @@ class WorldController extends AbstractController
 
     public function hello(): Response
     {
-        $user = $this->userService->create('J.R.R. Tolkien');
+        $user = $this->userService->updateUserLogin(1, 'My new user');
+        [$data, $code] = $user === null ? [null, Response::HTTP_NOT_FOUND] : [$user->toArray(), Response::HTTP_OK];
 
-        return $this->json($user->toArray());
+        return $this->json($data, $code);
     }
 }
