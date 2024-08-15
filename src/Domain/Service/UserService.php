@@ -90,4 +90,9 @@ class UserService
     {
         return $this->userRepository->findUserWithTweetsWithQueryBuilder($userId);
     }
+
+    public function findUserWithTweetsWithDBALQueryBuilder(int $userId): array
+    {
+        return $this->userRepository->findUserWithTweetsWithDBALQueryBuilder($userId);
+    }
 }

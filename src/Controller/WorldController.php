@@ -17,7 +17,7 @@ class WorldController extends AbstractController
     }
 
     /**
-     * @throws NonUniqueResultException
+     * @throws \Doctrine\DBAL\Exception
      */
     public function hello(): Response
     {
@@ -25,7 +25,7 @@ class WorldController extends AbstractController
             'Charles Dickens',
             ['Oliver Twist', 'The Christmas Carol']
         );
-        $userData = $this->userService->findUserWithTweetsWithQueryBuilder($user->getId());
+        $userData = $this->userService->findUserWithTweetsWithDBALQueryBuilder($user->getId());
 
         return $this->json($userData);
     }
