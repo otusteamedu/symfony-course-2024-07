@@ -4,6 +4,8 @@ namespace App\Infrastructure\Repository;
 
 use App\Domain\Entity\User;
 use Doctrine\Common\Collections\Criteria;
+use Doctrine\ORM\AbstractQuery;
+use Doctrine\ORM\NonUniqueResultException;
 
 /**
  * @extends AbstractRepository<User>
@@ -94,5 +96,19 @@ class UserRepository extends AbstractRepository
             ->setParameter('userLogin', $login);
 
         $queryBuilder->executeStatement();
+    }
+
+    /**
+     * @throws NonUniqueResultException
+     */
+    public function findUserWithTweetsWithQueryBuilder(int $userId): array
+    {
+        $queryBuilder = $this->entityManager->createQueryBuilder();
+        $queryBuilder->select('u')
+            ->from(User::class, 'u')
+            ->where($queryBuilder->expr()->eq('u.id', ':userId'))
+            ->setParameter('userId', $userId);
+
+        return $queryBuilder->getQuery()->getOneOrNullResult(AbstractQuery::HYDRATE_ARRAY);
     }
 }

@@ -85,4 +85,9 @@ class UserService
 
         return $user;
     }
+
+    public function findUserWithTweetsWithQueryBuilder(int $userId): array
+    {
+        return $this->userRepository->findUserWithTweetsWithQueryBuilder($userId);
+    }
 }
