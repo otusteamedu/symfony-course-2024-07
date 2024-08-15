@@ -80,4 +80,19 @@ class UserRepository extends AbstractRepository
 
         $queryBuilder->getQuery()->execute();
     }
+
+    /**
+     * @throws \Doctrine\DBAL\Exception
+     */
+    public function updateUserLoginWithDBALQueryBuilder(int $userId, string $login): void
+    {
+        $queryBuilder = $this->entityManager->getConnection()->createQueryBuilder();
+        $queryBuilder->update('"user"')
+            ->set('login', ':userLogin')
+            ->where($queryBuilder->expr()->eq('id', ':userId'))
+            ->setParameter('userId', $userId)
+            ->setParameter('userLogin', $login);
+
+        $queryBuilder->executeStatement();
+    }
 }

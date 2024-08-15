@@ -73,4 +73,16 @@ class UserService
 
         return $user;
     }
+
+    public function updateUserLoginWithDBALQueryBuilder(int $userId, string $login): ?User
+    {
+        $user = $this->userRepository->find($userId);
+        if (!($user instanceof User)) {
+            return null;
+        }
+        $this->userRepository->updateUserLoginWithDBALQueryBuilder($user->getId(), $login);
+        $this->userRepository->refresh($user);
+
+        return $user;
+    }
 }

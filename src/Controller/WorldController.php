@@ -16,7 +16,7 @@ class WorldController extends AbstractController
     public function hello(): Response
     {
         /** @var User $user */
-        $user = $this->userService->updateUserLoginWithQueryBuilder(1, 'User is updated again');
+        $user = $this->userService->updateUserLoginWithDBALQueryBuilder(1, 'User is updated by DBAL');
 
         return $this->json($user->toArray());
     }
