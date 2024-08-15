@@ -69,6 +69,7 @@ class UserService
             return null;
         }
         $this->userRepository->updateUserLoginWithQueryBuilder($user->getId(), $login);
+        $this->userRepository->refresh($user);
 
         return $user;
     }
