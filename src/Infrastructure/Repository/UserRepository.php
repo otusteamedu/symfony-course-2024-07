@@ -104,8 +104,9 @@ class UserRepository extends AbstractRepository
     public function findUserWithTweetsWithQueryBuilder(int $userId): array
     {
         $queryBuilder = $this->entityManager->createQueryBuilder();
-        $queryBuilder->select('u')
+        $queryBuilder->select('u', 't')
             ->from(User::class, 'u')
+            ->leftJoin('u.tweets', 't')
             ->where($queryBuilder->expr()->eq('u.id', ':userId'))
             ->setParameter('userId', $userId);
 
