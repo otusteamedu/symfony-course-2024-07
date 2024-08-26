@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Domain\Entity\User;
 use App\Domain\Service\UserService;
+use DateInterval;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -16,7 +17,7 @@ class WorldController extends AbstractController
 
     public function hello(): Response
     {
-        $user = $this->userService->create('Jack London');
+        $user = $this->userService->create('William Shakespeare');
         $this->userService->removeById($user->getId());
         $usersByLogin = $this->userService->findUsersByLogin($user->getLogin());
 

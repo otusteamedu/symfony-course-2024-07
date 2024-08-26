@@ -4,6 +4,7 @@ namespace App\Domain\Service;
 
 use App\Domain\Entity\User;
 use App\Infrastructure\Repository\UserRepository;
+use DateInterval;
 
 class UserService
 {
@@ -101,6 +102,14 @@ class UserService
         $user = $this->userRepository->find($userId);
         if ($user instanceof User) {
             $this->userRepository->remove($user);
+        }
+    }
+
+    public function removeByIdInFuture(int $userId, DateInterval $dateInterval): void
+    {
+        $user = $this->userRepository->find($userId);
+        if ($user instanceof User) {
+            $this->userRepository->removeInFuture($user, $dateInterval);
         }
     }
 }

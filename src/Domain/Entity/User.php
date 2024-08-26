@@ -2,6 +2,7 @@
 
 namespace App\Domain\Entity;
 
+use DateInterval;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -10,7 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Table(name: '`user`')]
 #[ORM\Entity]
 #[ORM\HasLifecycleCallbacks]
-class User implements EntityInterface, HasMetaTimestampsInterface, SoftDeletableInterface
+class User implements EntityInterface, HasMetaTimestampsInterface, SoftDeletableInterface, SoftDeletableInFutureInterface
 {
     #[ORM\Column(name: 'id', type: 'bigint', unique: true)]
     #[ORM\Id]
@@ -103,6 +104,14 @@ class User implements EntityInterface, HasMetaTimestampsInterface, SoftDeletable
     public function setDeletedAt(): void
     {
         $this->deletedAt = new DateTime();
+    }
+
+    public function setDeletedAtInFuture(DateInterval $dateInterval): void
+    {
+        if ($this->deletedAt === null) {
+            $this->deletedAt = new DateTime();
+        }
+        $this->deletedAt = $this->deletedAt->add($dateInterval);
     }
 
     public function addTweet(Tweet $tweet): void

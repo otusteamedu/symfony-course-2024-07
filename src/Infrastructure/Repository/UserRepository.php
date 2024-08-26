@@ -3,6 +3,7 @@
 namespace App\Infrastructure\Repository;
 
 use App\Domain\Entity\User;
+use DateInterval;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\NonUniqueResultException;
@@ -131,6 +132,12 @@ class UserRepository extends AbstractRepository
     public function remove(User $user): void
     {
         $user->setDeletedAt();
+        $this->flush();
+    }
+
+    public function removeInFuture(User $user, DateInterval $dateInterval): void
+    {
+        $user->setDeletedAtInFuture($dateInterval);
         $this->flush();
     }
 }

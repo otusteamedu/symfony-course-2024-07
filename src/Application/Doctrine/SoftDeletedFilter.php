@@ -14,6 +14,8 @@ class SoftDeletedFilter extends SQLFilter
             return '';
         }
 
-        return $targetTableAlias.'.deleted_at IS NULL';
+        return $this->getParameter('checkTime') ?
+            '('.$targetTableAlias.'.deleted_at IS NULL OR '.$targetTableAlias.'.deleted_at >= current_timestamp)' :
+            $targetTableAlias.'.deleted_at IS NULL';
     }
 }

@@ -28,6 +28,8 @@ doctrine:
             soft_delete_filter:
                 class: App\Application\Doctrine\SoftDeletedFilter
                 enabled: true
+                parameters:
+                    checkTime: true
 
 when@test:
     doctrine:
