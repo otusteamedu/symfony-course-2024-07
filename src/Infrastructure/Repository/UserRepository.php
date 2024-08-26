@@ -127,4 +127,10 @@ class UserRepository extends AbstractRepository
 
         return $queryBuilder->executeQuery()->fetchAllNumeric();
     }
+
+    public function remove(User $user): void
+    {
+        $user->setDeletedAt();
+        $this->flush();
+    }
 }

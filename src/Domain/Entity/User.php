@@ -10,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Table(name: '`user`')]
 #[ORM\Entity]
 #[ORM\HasLifecycleCallbacks]
-class User implements EntityInterface, HasMetaTimestampsInterface
+class User implements EntityInterface, HasMetaTimestampsInterface, SoftDeletableInterface
 {
     #[ORM\Column(name: 'id', type: 'bigint', unique: true)]
     #[ORM\Id]
@@ -43,6 +43,9 @@ class User implements EntityInterface, HasMetaTimestampsInterface
 
     #[ORM\OneToMany(mappedBy: 'author', targetEntity: 'Subscription')]
     private Collection $subscriptionFollowers;
+
+    #[ORM\Column(name: 'deleted_at', type: 'datetime', nullable: true)]
+    private ?DateTime $deletedAt = null;
 
     public function __construct()
     {
@@ -90,6 +93,16 @@ class User implements EntityInterface, HasMetaTimestampsInterface
     #[ORM\PreUpdate]
     public function setUpdatedAt(): void {
         $this->updatedAt = new DateTime();
+    }
+
+    public function getDeletedAt(): ?DateTime
+    {
+        return $this->deletedAt;
+    }
+
+    public function setDeletedAt(): void
+    {
+        $this->deletedAt = new DateTime();
     }
 
     public function addTweet(Tweet $tweet): void

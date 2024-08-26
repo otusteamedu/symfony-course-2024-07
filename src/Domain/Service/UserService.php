@@ -95,4 +95,12 @@ class UserService
     {
         return $this->userRepository->findUserWithTweetsWithDBALQueryBuilder($userId);
     }
+
+    public function removeById(int $userId): void
+    {
+        $user = $this->userRepository->find($userId);
+        if ($user instanceof User) {
+            $this->userRepository->remove($user);
+        }
+    }
 }
