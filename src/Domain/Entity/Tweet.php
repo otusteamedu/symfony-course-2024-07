@@ -7,6 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Table(name: 'tweet')]
 #[ORM\Entity]
+#[ORM\Index(name: 'tweet__author_id__ind', columns: ['author_id'])]
 class Tweet implements EntityInterface
 {
     #[ORM\Column(name: 'id', type: 'bigint', unique: true)]

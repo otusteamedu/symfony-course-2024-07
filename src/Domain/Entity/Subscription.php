@@ -7,6 +7,8 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Table(name: 'subscription')]
 #[ORM\Entity]
+#[ORM\Index(name: 'subscription__author_id__ind', columns: ['author_id'])]
+#[ORM\Index(name: 'subscription__follower_id__ind', columns: ['follower_id'])]
 class Subscription implements EntityInterface
 {
     #[ORM\Column(name: 'id', type: 'bigint', unique: true)]

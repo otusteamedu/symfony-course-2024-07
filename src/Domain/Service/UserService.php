@@ -15,8 +15,6 @@ class UserService
     {
         $user = new User();
         $user->setLogin($login);
-        $user->setCreatedAt();
-        $user->setUpdatedAt();
         $this->userRepository->create($user);
 
         return $user;
@@ -46,5 +44,55 @@ class UserService
     public function findUsersByLoginWithCriteria(string $login): array
     {
         return $this->userRepository->findUsersByLoginWithCriteria($login);
+    }
+
+    public function updateUserLogin(int $userId, string $login): ?User
+    {
+        $user = $this->userRepository->find($userId);
+        if (!($user instanceof User)) {
+            return null;
+        }
+        $this->userRepository->updateLogin($user, $login);
+
+        return $user;
+    }
+
+    public function findUsersByLoginWithQueryBuilder(string $login): array
+    {
+        return $this->userRepository->findUsersByLoginWithQueryBuilder($login);
+    }
+
+    public function updateUserLoginWithQueryBuilder(int $userId, string $login): ?User
+    {
+        $user = $this->userRepository->find($userId);
+        if (!($user instanceof User)) {
+            return null;
+        }
+        $this->userRepository->updateUserLoginWithQueryBuilder($user->getId(), $login);
+        $this->userRepository->refresh($user);
+
+        return $user;
+    }
+
+    public function updateUserLoginWithDBALQueryBuilder(int $userId, string $login): ?User
+    {
+        $user = $this->userRepository->find($userId);
+        if (!($user instanceof User)) {
+            return null;
+        }
+        $this->userRepository->updateUserLoginWithDBALQueryBuilder($user->getId(), $login);
+        $this->userRepository->refresh($user);
+
+        return $user;
+    }
+
+    public function findUserWithTweetsWithQueryBuilder(int $userId): array
+    {
+        return $this->userRepository->findUserWithTweetsWithQueryBuilder($userId);
+    }
+
+    public function findUserWithTweetsWithDBALQueryBuilder(int $userId): array
+    {
+        return $this->userRepository->findUserWithTweetsWithDBALQueryBuilder($userId);
     }
 }
