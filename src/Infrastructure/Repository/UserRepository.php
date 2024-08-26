@@ -140,4 +140,16 @@ class UserRepository extends AbstractRepository
         $user->setDeletedAtInFuture($dateInterval);
         $this->flush();
     }
+
+    /**
+     * @return User[]
+     */
+    public function findUsersByLoginWithDeleted(string $name): array
+    {
+        $filters = $this->entityManager->getFilters();
+        if ($filters->isEnabled('soft_delete_filter')) {
+            $filters->disable('soft_delete_filter');
+        }
+        return $this->entityManager->getRepository(User::class)->findBy(['login' => $name]);
+    }
 }

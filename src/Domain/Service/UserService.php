@@ -112,4 +112,12 @@ class UserService
             $this->userRepository->removeInFuture($user, $dateInterval);
         }
     }
+
+    /**
+     * @return User[]
+     */
+    public function findUsersByLoginWithDeleted(string $login): array
+    {
+        return $this->userRepository->findUsersByLoginWithDeleted($login);
+    }
 }
