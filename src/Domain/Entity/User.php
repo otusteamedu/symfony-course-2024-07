@@ -3,6 +3,7 @@
 namespace App\Domain\Entity;
 
 use App\Domain\ValueObject\CommunicationChannel;
+use App\Domain\ValueObject\CommunicationChannelEnum;
 use DateInterval;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -49,8 +50,8 @@ class User implements EntityInterface, HasMetaTimestampsInterface, SoftDeletable
     #[ORM\Column(name: 'deleted_at', type: 'datetime', nullable: true)]
     private ?DateTime $deletedAt = null;
 
-    #[ORM\Column(name: 'communication_channel', type: 'communicationChannel', nullable: true)]
-    private ?CommunicationChannel $communicationChannel = null;
+    #[ORM\Column(name: 'communication_channel', type: 'string', nullable: true, enumType: CommunicationChannelEnum::class)]
+    private ?CommunicationChannelEnum $communicationChannel = null;
 
     public function __construct()
     {
@@ -118,12 +119,12 @@ class User implements EntityInterface, HasMetaTimestampsInterface, SoftDeletable
         $this->deletedAt = $this->deletedAt->add($dateInterval);
     }
 
-    public function getCommunicationChannel(): ?CommunicationChannel
+    public function getCommunicationChannel(): ?CommunicationChannelEnum
     {
         return $this->communicationChannel;
     }
 
-    public function setCommunicationChannel(?CommunicationChannel $communicationChannel): void
+    public function setCommunicationChannel(?CommunicationChannelEnum $communicationChannel): void
     {
         $this->communicationChannel = $communicationChannel;
     }
@@ -170,7 +171,7 @@ class User implements EntityInterface, HasMetaTimestampsInterface, SoftDeletable
             'login' => $this->login,
             'createdAt' => $this->createdAt->format('Y-m-d H:i:s'),
             'updatedAt' => $this->updatedAt->format('Y-m-d H:i:s'),
-            'communicationChannel' => $this->communicationChannel->getValue(),
+            'communicationChannel' => $this->communicationChannel->value,
             'tweets' => array_map(static fn(Tweet $tweet) => $tweet->toArray(), $this->tweets->toArray()),
             'followers' => array_map(
                 static fn(User $user) => ['id' => $user->getId(), 'login' => $user->getLogin()],
