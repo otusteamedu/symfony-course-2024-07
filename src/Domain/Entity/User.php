@@ -2,7 +2,6 @@
 
 namespace App\Domain\Entity;
 
-use App\Domain\ValueObject\CommunicationChannel;
 use App\Domain\ValueObject\CommunicationChannelEnum;
 use DateInterval;
 use DateTime;
@@ -13,6 +12,14 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Table(name: '`user`')]
 #[ORM\Entity]
 #[ORM\HasLifecycleCallbacks]
+#[ORM\InheritanceType('JOINED')]
+#[ORM\DiscriminatorColumn(name: 'communication_channel', type: 'string', enumType: CommunicationChannelEnum::class)]
+#[ORM\DiscriminatorMap(
+    [
+        CommunicationChannelEnum::Email->value => EmailUser::class,
+        CommunicationChannelEnum::Phone->value => PhoneUser::class,
+    ]
+)]
 class User implements EntityInterface, HasMetaTimestampsInterface, SoftDeletableInterface, SoftDeletableInFutureInterface
 {
     #[ORM\Column(name: 'id', type: 'bigint', unique: true)]
@@ -49,9 +56,6 @@ class User implements EntityInterface, HasMetaTimestampsInterface, SoftDeletable
 
     #[ORM\Column(name: 'deleted_at', type: 'datetime', nullable: true)]
     private ?DateTime $deletedAt = null;
-
-    #[ORM\Column(name: 'communication_channel', type: 'string', nullable: true, enumType: CommunicationChannelEnum::class)]
-    private ?CommunicationChannelEnum $communicationChannel = null;
 
     public function __construct()
     {
@@ -119,16 +123,6 @@ class User implements EntityInterface, HasMetaTimestampsInterface, SoftDeletable
         $this->deletedAt = $this->deletedAt->add($dateInterval);
     }
 
-    public function getCommunicationChannel(): ?CommunicationChannelEnum
-    {
-        return $this->communicationChannel;
-    }
-
-    public function setCommunicationChannel(?CommunicationChannelEnum $communicationChannel): void
-    {
-        $this->communicationChannel = $communicationChannel;
-    }
-
     public function addTweet(Tweet $tweet): void
     {
         if (!$this->tweets->contains($tweet)) {
@@ -171,7 +165,6 @@ class User implements EntityInterface, HasMetaTimestampsInterface, SoftDeletable
             'login' => $this->login,
             'createdAt' => $this->createdAt->format('Y-m-d H:i:s'),
             'updatedAt' => $this->updatedAt->format('Y-m-d H:i:s'),
-            'communicationChannel' => $this->communicationChannel->value,
             'tweets' => array_map(static fn(Tweet $tweet) => $tweet->toArray(), $this->tweets->toArray()),
             'followers' => array_map(
                 static fn(User $user) => ['id' => $user->getId(), 'login' => $user->getLogin()],

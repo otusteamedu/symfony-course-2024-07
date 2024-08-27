@@ -17,8 +17,13 @@ class WorldController extends AbstractController
 
     public function hello(): Response
     {
-        $user = $this->userService->create('Howard Lovecraft', 'email');
+        $this->userService->createWithPhone('Phone user', '+1234567890');
+        $this->userService->createWithEmail('Email user', 'my@mail.ru');
+        $phoneUsers = $this->userService->findUsersByLogin('Phone user');
+        $emailUsers = $this->userService->findUsersByLogin('Email user');
 
-        return $this->json(['user' => $user->toArray()]);
+        return $this->json(
+            ['users' => array_map(static fn (User $user) => $user->toArray(), array_merge($phoneUsers, $emailUsers))]
+        );
     }
 }
