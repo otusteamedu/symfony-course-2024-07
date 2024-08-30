@@ -14,11 +14,10 @@ class Controller
     public function __construct(private readonly Manager $manager) {
     }
 
-    #[Route(path: 'api/v1/user', methods: ['DELETE'])]
-    public function __invoke(Request $request): Response
+    #[Route(path: 'api/v1/user/{id}', requirements: ['id' => '\d+'], methods: ['DELETE'])]
+    public function __invoke(int $id): Response
     {
-        $userId = $request->query->get('id');
-        $result = $this->manager->deleteUserById($userId);
+        $result = $this->manager->deleteUserById($id);
         if ($result) {
             return new JsonResponse(['success' => true]);
         }
