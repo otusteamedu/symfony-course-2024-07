@@ -150,4 +150,9 @@ class UserService
     {
         return $this->userRepository->findAll();
     }
+
+    public function remove(User $user): void
+    {
+        $this->userRepository->remove($user);
+    }
 }
