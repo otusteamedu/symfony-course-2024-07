@@ -2,6 +2,8 @@
 
 namespace App\Domain\Entity;
 
+use App\Domain\ValueObject\CommunicationChannelEnum;
+use DateInterval;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -10,7 +12,15 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Table(name: '`user`')]
 #[ORM\Entity]
 #[ORM\HasLifecycleCallbacks]
-class User implements EntityInterface, HasMetaTimestampsInterface
+#[ORM\InheritanceType('SINGLE_TABLE')]
+#[ORM\DiscriminatorColumn(name: 'communication_channel', type: 'string', enumType: CommunicationChannelEnum::class)]
+#[ORM\DiscriminatorMap(
+    [
+        CommunicationChannelEnum::Email->value => EmailUser::class,
+        CommunicationChannelEnum::Phone->value => PhoneUser::class,
+    ]
+)]
+class User implements EntityInterface, HasMetaTimestampsInterface, SoftDeletableInterface, SoftDeletableInFutureInterface
 {
     #[ORM\Column(name: 'id', type: 'bigint', unique: true)]
     #[ORM\Id]
@@ -43,6 +53,9 @@ class User implements EntityInterface, HasMetaTimestampsInterface
 
     #[ORM\OneToMany(mappedBy: 'author', targetEntity: 'Subscription')]
     private Collection $subscriptionFollowers;
+
+    #[ORM\Column(name: 'deleted_at', type: 'datetime', nullable: true)]
+    private ?DateTime $deletedAt = null;
 
     public function __construct()
     {
@@ -90,6 +103,24 @@ class User implements EntityInterface, HasMetaTimestampsInterface
     #[ORM\PreUpdate]
     public function setUpdatedAt(): void {
         $this->updatedAt = new DateTime();
+    }
+
+    public function getDeletedAt(): ?DateTime
+    {
+        return $this->deletedAt;
+    }
+
+    public function setDeletedAt(): void
+    {
+        $this->deletedAt = new DateTime();
+    }
+
+    public function setDeletedAtInFuture(DateInterval $dateInterval): void
+    {
+        if ($this->deletedAt === null) {
+            $this->deletedAt = new DateTime();
+        }
+        $this->deletedAt = $this->deletedAt->add($dateInterval);
     }
 
     public function addTweet(Tweet $tweet): void
