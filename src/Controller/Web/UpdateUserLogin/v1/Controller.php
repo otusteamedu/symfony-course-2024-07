@@ -17,8 +17,8 @@ class Controller
     #[Route(path: 'api/v1/user', methods: ['PATCH'])]
     public function __invoke(Request $request): Response
     {
-        $userId = $request->request->get('id');
-        $login = $request->request->get('login');
+        $userId = $request->query->get('id');
+        $login = $request->query->get('login');
         $result = $this->manager->updateUserLogin($userId, $login);
 
         if ($result) {
