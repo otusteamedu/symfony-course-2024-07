@@ -20,6 +20,7 @@ use Doctrine\ORM\Mapping as ORM;
         CommunicationChannelEnum::Phone->value => PhoneUser::class,
     ]
 )]
+#[ORM\UniqueConstraint(name: 'user__login__uniq', columns: ['login'], options: ['where' => '(deleted_at IS NULL)'])]
 class User implements EntityInterface, HasMetaTimestampsInterface, SoftDeletableInterface, SoftDeletableInFutureInterface
 {
     #[ORM\Column(name: 'id', type: 'bigint', unique: true)]
