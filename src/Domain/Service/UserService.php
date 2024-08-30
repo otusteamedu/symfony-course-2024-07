@@ -155,4 +155,9 @@ class UserService
     {
         $this->userRepository->remove($user);
     }
+
+    public function updateLogin(User $user, string $login): void
+    {
+        $this->userRepository->updateLogin($user, $login);
+    }
 }

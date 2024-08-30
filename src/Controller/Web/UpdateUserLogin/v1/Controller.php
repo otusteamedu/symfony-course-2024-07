@@ -2,6 +2,8 @@
 
 namespace App\Controller\Web\UpdateUserLogin\v1;
 
+use App\Domain\Entity\User;
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -14,17 +16,12 @@ class Controller
     public function __construct(private readonly Manager $manager) {
     }
 
-    #[Route(path: 'api/v1/user', methods: ['PATCH'])]
-    public function __invoke(Request $request): Response
+    #[Route(path: 'api/v1/user/{id}', methods: ['PATCH'])]
+    public function __invoke(#[MapEntity(expr: 'repository.find(id)')] User $user, Request $request): Response
     {
-        $userId = $request->query->get('id');
         $login = $request->query->get('login');
-        $result = $this->manager->updateUserLogin($userId, $login);
+        $this->manager->updateLogin($user, $login);
 
-        if ($result) {
-            return new JsonResponse(['success' => true]);
-        }
-
-        return new JsonResponse(null, Response::HTTP_NOT_FOUND);
+        return new JsonResponse(['success' => true]);
     }
 }
