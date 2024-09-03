@@ -66,7 +66,7 @@ class UserRepository extends AbstractRepository
         $queryBuilder = $this->entityManager->createQueryBuilder();
         $queryBuilder->select('u')
             ->from(User::class, 'u')
-            ->andWhere($queryBuilder->expr()->like('u.login',':userLogin'))
+            ->andWhere($queryBuilder->expr()->like('u.login', ':userLogin'))
             ->setParameter('userLogin', "%$login%");
 
         return $queryBuilder->getQuery()->getResult();
@@ -75,7 +75,7 @@ class UserRepository extends AbstractRepository
     public function updateUserLoginWithQueryBuilder(int $userId, string $login): void
     {
         $queryBuilder = $this->entityManager->createQueryBuilder();
-        $queryBuilder->update(User::class,'u')
+        $queryBuilder->update(User::class, 'u')
             ->set('u.login', ':userLogin')
             ->where($queryBuilder->expr()->eq('u.id', ':userId'))
             ->setParameter('userId', $userId)
@@ -151,5 +151,13 @@ class UserRepository extends AbstractRepository
             $filters->disable('soft_delete_filter');
         }
         return $this->entityManager->getRepository(User::class)->findBy(['login' => $name]);
+    }
+
+    /**
+     * @return User[]
+     */
+    public function findAll(): array
+    {
+        return $this->entityManager->getRepository(User::class)->findAll();
     }
 }
