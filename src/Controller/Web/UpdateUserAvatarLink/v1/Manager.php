@@ -15,9 +15,9 @@ class Manager
     ) {
     }
 
-    public function updateUserAvatarLink(User $user, UploadedFile $file): void
+    public function updateUserAvatarLink(User $user, UploadedFile $uploadedFile): void
     {
-        $this->fileService->storeUploadedFile($file);
+        $file = $this->fileService->storeUploadedFile($uploadedFile);
         $this->userService->updateAvatarLink($user, $file->getRealPath());
     }
 }
