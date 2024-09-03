@@ -2,6 +2,7 @@
 
 namespace App\Controller\Web\UpdateUserAvatarLink\v1;
 
+use App\Controller\Exception\DeprecatedException;
 use App\Domain\Entity\User;
 use App\Domain\Service\FileService;
 use App\Domain\Service\UserService;
@@ -19,6 +20,7 @@ class Manager
 
     public function updateUserAvatarLink(User $user, UploadedFile $uploadedFile): void
     {
+        throw new DeprecatedException();
         $file = $this->fileService->storeUploadedFile($uploadedFile);
         $path = $this->baseUrl . str_replace($this->uploadPrefix, '', $file->getRealPath());
         $this->userService->updateAvatarLink($user, $path);

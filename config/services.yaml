@@ -76,3 +76,7 @@ services:
         arguments:
             $baseUrl: '%baseUrl%'
             $uploadPrefix: '%uploadPrefix%'
+
+    App\Application\EventListener\KernelExceptionEventListener:
+        tags:
+            - { name: kernel.event_listener, event: kernel.exception }
