@@ -61,6 +61,12 @@ class UserRepository extends AbstractRepository
         $this->flush();
     }
 
+    public function updateAvatarLink(User $user, string $avatarLink): void
+    {
+        $user->setAvatarLink($avatarLink);
+        $this->flush();
+    }
+
     public function findUsersByLoginWithQueryBuilder(string $login): array
     {
         $queryBuilder = $this->entityManager->createQueryBuilder();

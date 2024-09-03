@@ -4,6 +4,8 @@
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
 parameters:
+    baseUrl: 'http://localhost:7777'
+    uploadPrefix: '/app/public'
 
 services:
     # default configuration for services in *this* file
@@ -69,3 +71,12 @@ services:
         calls:
             - [setTag, ['li']]
         tags: ['app.formatter_service']
+
+    App\Controller\Web\UpdateUserAvatarLink\v1\Manager:
+        arguments:
+            $baseUrl: '%baseUrl%'
+            $uploadPrefix: '%uploadPrefix%'
+
+    App\Application\EventListener\KernelExceptionEventListener:
+        tags:
+            - { name: kernel.event_listener, event: kernel.exception }

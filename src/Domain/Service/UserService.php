@@ -160,4 +160,9 @@ class UserService
     {
         $this->userRepository->updateLogin($user, $login);
     }
+
+    public function updateAvatarLink(User $user, string $avatarLink): void
+    {
+        $this->userRepository->updateAvatarLink($user, $avatarLink);
+    }
 }
