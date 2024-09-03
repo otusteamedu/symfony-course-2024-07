@@ -12,12 +12,15 @@ class Manager
     public function __construct(
         private readonly FileService $fileService,
         private readonly UserService $userService,
+        private readonly string $baseUrl,
+        private readonly string $uploadPrefix,
     ) {
     }
 
     public function updateUserAvatarLink(User $user, UploadedFile $uploadedFile): void
     {
         $file = $this->fileService->storeUploadedFile($uploadedFile);
-        $this->userService->updateAvatarLink($user, $file->getRealPath());
+        $path = $this->baseUrl . str_replace($this->uploadPrefix, '', $file->getRealPath());
+        $this->userService->updateAvatarLink($user, $path);
     }
 }
