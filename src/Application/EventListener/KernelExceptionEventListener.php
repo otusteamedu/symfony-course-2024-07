@@ -19,8 +19,13 @@ class KernelExceptionEventListener
 
         if ($exception instanceof HttpCompliantExceptionInterface) {
             $event->setResponse($this->getHttpResponse($exception->getHttpResponseBody(), $exception->getHttpCode()));
-        } elseif ($exception instanceof HttpExceptionInterface && $exception->getPrevious() instanceof ValidationFailedException) {
-            $event->setResponse($this->getValidationFailedResponse($exception->getPrevious()));
+        } else {
+            if ($exception instanceof HttpExceptionInterface) {
+                $exception = $exception->getPrevious();
+            }
+            if ($exception instanceof ValidationFailedException) {
+                $event->setResponse($this->getValidationFailedResponse($exception));
+            }
         }
     }
 

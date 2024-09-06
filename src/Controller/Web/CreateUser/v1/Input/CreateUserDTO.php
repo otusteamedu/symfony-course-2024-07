@@ -14,6 +14,7 @@ class CreateUserDTO
         #[Assert\NotBlank]
         public readonly string $login,
         public readonly ?string $email,
+        #[Assert\Length(max: 20)]
         public readonly ?string $phone,
     ) {
     }
