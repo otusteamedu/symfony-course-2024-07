@@ -8,11 +8,16 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Serializer\Encoder\JsonEncoder;
+use Symfony\Component\Serializer\SerializerInterface;
 
 #[AsController]
 class Controller
 {
-    public function __construct(private readonly Manager $manager) {
+    public function __construct(
+        private readonly Manager $manager,
+        private readonly SerializerInterface $serializer
+    ) {
     }
 
     #[Route(path: 'api/v1/user', methods: ['POST'])]
@@ -20,6 +25,6 @@ class Controller
     {
         $user = $this->manager->create($createUserDTO);
 
-        return new JsonResponse($user->toArray());
+        return new JsonResponse($this->serializer->serialize($user, JsonEncoder::FORMAT), Response::HTTP_OK, [], true);
     }
 }
