@@ -7,11 +7,12 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
-use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\Exception\ValidationFailedException;
 
 class KernelExceptionEventListener
 {
+    private const DEFAULT_PROPERTY = 'error';
+
     public function onKernelException(ExceptionEvent $event): void
     {
         $exception = $event->getThrowable();
@@ -30,7 +31,8 @@ class KernelExceptionEventListener
     private function getValidationFailedResponse(ValidationFailedException $exception): Response {
         $response = [];
         foreach ($exception->getViolations() as $violation) {
-            $response[$violation->getPropertyPath()] = $violation->getMessage();
+            $property = empty($violation->getPropertyPath()) ? self::DEFAULT_PROPERTY : $violation->getPropertyPath();
+            $response[$property] = $violation->getMessage();
         }
         return new JsonResponse($response, Response::HTTP_BAD_REQUEST);
     }
