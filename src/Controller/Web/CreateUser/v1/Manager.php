@@ -2,6 +2,7 @@
 
 namespace App\Controller\Web\CreateUser\v1;
 
+use App\Controller\Web\CreateUser\v1\Input\CreateUserDTO;
 use App\Domain\Entity\User;
 use App\Domain\Event\CreateUserEvent;
 use App\Domain\Service\UserService;
@@ -15,9 +16,9 @@ class Manager
     ) {
     }
 
-    public function create(string $login, ?string $phone = null, ?string $email = null): ?User
+    public function create(CreateUserDTO $createUserDTO): ?User
     {
-        $event = new CreateUserEvent($login, $phone, $email);
+        $event = new CreateUserEvent($createUserDTO->login, $createUserDTO->phone, $createUserDTO->email);
         $event = $this->eventDispatcher->dispatch($event);
 
         return $event->id === null ? null : $this->userService->findUserById($event->id);
