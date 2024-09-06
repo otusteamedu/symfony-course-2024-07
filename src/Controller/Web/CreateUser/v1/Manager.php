@@ -4,23 +4,23 @@ namespace App\Controller\Web\CreateUser\v1;
 
 use App\Controller\Web\CreateUser\v1\Input\CreateUserDTO;
 use App\Domain\Entity\User;
-use App\Domain\Event\CreateUserEvent;
+use App\Domain\Model\CreateUserModel;
 use App\Domain\Service\UserService;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use App\Domain\ValueObject\CommunicationChannelEnum;
 
 class Manager
 {
     public function __construct(
         private readonly UserService $userService,
-        private readonly EventDispatcherInterface $eventDispatcher,
     ) {
     }
 
-    public function create(CreateUserDTO $createUserDTO): ?User
+    public function create(CreateUserDTO $createUserDTO): User
     {
-        $event = new CreateUserEvent($createUserDTO->login, $createUserDTO->phone, $createUserDTO->email);
-        $event = $this->eventDispatcher->dispatch($event);
+        $communicationMethod = $createUserDTO->phone ?? $createUserDTO->email;
+        $communicationChannel = $createUserDTO->phone === null ? CommunicationChannelEnum::Email : CommunicationChannelEnum::Phone;
+        $createUserModel = new CreateUserModel($createUserDTO->login, $communicationMethod, $communicationChannel);
 
-        return $event->id === null ? null : $this->userService->findUserById($event->id);
+        return $this->userService->create($createUserModel);
     }
 }

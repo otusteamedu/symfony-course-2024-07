@@ -5,6 +5,8 @@ namespace App\Domain\Service;
 use App\Domain\Entity\EmailUser;
 use App\Domain\Entity\PhoneUser;
 use App\Domain\Entity\User;
+use App\Domain\Model\CreateUserModel;
+use App\Domain\ValueObject\CommunicationChannelEnum;
 use App\Infrastructure\Repository\UserRepository;
 use DateInterval;
 
@@ -12,6 +14,18 @@ class UserService
 {
     public function __construct(private readonly UserRepository $userRepository)
     {
+    }
+
+    public function create(CreateUserModel $createUserModel): User
+    {
+        $user = match($createUserModel->communicationChannel) {
+            CommunicationChannelEnum::Email => (new EmailUser())->setEmail($createUserModel->communicationMethod),
+            CommunicationChannelEnum::Phone => (new PhoneUser())->setPhone($createUserModel->communicationMethod),
+        };
+        $user->setLogin($createUserModel->login);
+        $this->userRepository->create($user);
+
+        return $user;
     }
 
     public function createWithPhone(string $login, string $phone): User

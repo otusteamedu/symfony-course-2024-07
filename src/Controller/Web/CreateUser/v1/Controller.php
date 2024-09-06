@@ -4,7 +4,6 @@ namespace App\Controller\Web\CreateUser\v1;
 
 use App\Controller\Web\CreateUser\v1\Input\CreateUserDTO;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
@@ -20,9 +19,6 @@ class Controller
     public function __invoke(#[MapRequestPayload] CreateUserDTO $createUserDTO): Response
     {
         $user = $this->manager->create($createUserDTO);
-        if ($user === null) {
-            return new JsonResponse(null, Response::HTTP_BAD_REQUEST);
-        }
 
         return new JsonResponse($user->toArray());
     }
