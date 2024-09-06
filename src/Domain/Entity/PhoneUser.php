@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity]
 class PhoneUser extends User
 {
-    #[ORM\Column(type: 'string', nullable: false)]
+    #[ORM\Column(type: 'string', length: 20, nullable: false)]
     private string $phone;
 
     public function getPhone(): string
