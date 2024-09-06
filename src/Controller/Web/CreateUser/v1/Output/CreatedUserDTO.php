@@ -2,7 +2,9 @@
 
 namespace App\Controller\Web\CreateUser\v1\Output;
 
-class CreatedUserDTO
+use App\Controller\DTO\OutputDTOInterface;
+
+class CreatedUserDTO implements OutputDTOInterface
 {
     public function __construct(
         public readonly int $id,
