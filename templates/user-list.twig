@@ -1,14 +1,12 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8">
-    <title>User list</title>
-</head>
-<body>
-<ul id="user.list">
-    {% for user in users %}
-        <li>{{ user.id }}. {{ user.login|lower }} {{ user.communicationChannel|upper }} ({{ user.communicationMethod }}) </li>
-    {% endfor %}
-</ul>
-</body>
-</html>
+{% extends 'layout.twig' %}
+
+{% block title %}
+    User list
+{% endblock %}
+{% block body %}
+    <ol id="user.list">
+        {% for user in users %}
+            <li>{{ user.id }}. {{ user.login|lower }} {{ user.communicationChannel|upper }} ({{ user.communicationMethod }}) </li>
+        {% endfor %}
+    </ol>
+{% endblock %}
