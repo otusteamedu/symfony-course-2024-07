@@ -15,7 +15,7 @@ class EditController extends AbstractController
     {
     }
 
-    #[Route(path: '/api/v1/update-phone-user/{id}', methods: ['GET', 'POST'])]
+    #[Route(path: '/api/v1/update-phone-user/{id}', methods: ['GET', 'PATCH'])]
     public function manageUserAction(Request $request, #[MapEntity(id: 'id')] User $user): Response
     {
         return $this->render('phone-user.html.twig', $this->manager->getFormData($request, $user));

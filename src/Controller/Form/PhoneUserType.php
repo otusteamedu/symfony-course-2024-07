@@ -42,7 +42,8 @@ class PhoneUserType extends AbstractType
             ->add('isActive', CheckboxType::class, [
                 'required' => false,
             ])
-            ->add('submit', SubmitType::class);
+            ->add('submit', SubmitType::class)
+            ->setMethod($options['isNew'] ? 'POST' : 'PATCH');
     }
 
     public function configureOptions(OptionsResolver $resolver): void
