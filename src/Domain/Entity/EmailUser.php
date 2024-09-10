@@ -16,9 +16,11 @@ class EmailUser extends User
         return $this->email;
     }
 
-    public function setEmail(string $email): void
+    public function setEmail(string $email): self
     {
         $this->email = $email;
+
+        return $this;
     }
 
     public function toArray(): array
