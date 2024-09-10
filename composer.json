@@ -23,6 +23,7 @@
         "symfony/serializer": "7.1.*",
         "symfony/twig-bundle": "7.1.*",
         "symfony/validator": "7.1.*",
+        "symfony/webpack-encore-bundle": "^2.1",
         "symfony/yaml": "7.1.*"
     },
     "config": {
