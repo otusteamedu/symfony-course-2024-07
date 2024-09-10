@@ -61,6 +61,15 @@ class User implements EntityInterface, HasMetaTimestampsInterface, SoftDeletable
     #[ORM\Column(type: 'string', nullable: true)]
     private ?string $avatarLink = null;
 
+    #[ORM\Column(type: 'string', nullable: false)]
+    private string $password;
+
+    #[ORM\Column(type: 'integer', nullable: false)]
+    private int $age;
+
+    #[ORM\Column(type: 'boolean', nullable: false)]
+    private bool $isActive;
+
     public function __construct()
     {
         $this->tweets = new ArrayCollection();
@@ -170,6 +179,36 @@ class User implements EntityInterface, HasMetaTimestampsInterface, SoftDeletable
         if (!$this->subscriptionFollowers->contains($subscription)) {
             $this->subscriptionFollowers->add($subscription);
         }
+    }
+
+    public function getPassword(): string
+    {
+        return $this->password;
+    }
+
+    public function setPassword(string $password): void
+    {
+        $this->password = $password;
+    }
+
+    public function getAge(): int
+    {
+        return $this->age;
+    }
+
+    public function setAge(int $age): void
+    {
+        $this->age = $age;
+    }
+
+    public function isActive(): bool
+    {
+        return $this->isActive;
+    }
+
+    public function setIsActive(bool $isActive): void
+    {
+        $this->isActive = $isActive;
     }
 
     public function toArray(): array

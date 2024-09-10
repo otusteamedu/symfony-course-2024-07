@@ -18,6 +18,9 @@ class CreateUserModel
         )]
         public readonly string $communicationMethod,
         public readonly CommunicationChannelEnum $communicationChannel,
+        public readonly string $password = 'myPass',
+        public readonly int $age = 18,
+        public readonly bool $isActive = true,
     ) {
     }
 }
