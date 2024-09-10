@@ -1,5 +1,5 @@
 {% macro user_table_body(users) %}
     {% for user in users %}
-        <tr><td>{{ user.id }}</td><td>{{ user.login }}</td><td>{{ user.communicationChannel }}</td><td>({{ user.communicationMethod }})</td></tr>
+        <tr><td>{{ user.id|my_twice }}</td><td>{{ user.login }}</td><td>{{ user.communicationChannel }}</td><td>({{ user.communicationMethod }})</td></tr>
     {% endfor %}
 {% endmacro %}
