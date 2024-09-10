@@ -1,5 +1,7 @@
 {% extends 'layout.twig' %}
 
+{% import 'macros.twig' as macros %}
+
 {% block title %}
     User table
 {% endblock %}
@@ -7,9 +9,7 @@
     <table>
         <tbody>
         <tr><th>ID</th><th>Логин</th><th>Канал коммуникации</th><th>Адрес</th></tr>
-        {% for user in users %}
-            <tr><td>{{ user.id }}</td><td>{{ user.login }}</td><td>{{ user.communicationChannel }}</td><td>({{ user.communicationMethod }})</td></tr>
-        {% endfor %}
+        {{ macros.user_table_body(users) }}
         </tbody>
     </table>
 {% endblock %}
