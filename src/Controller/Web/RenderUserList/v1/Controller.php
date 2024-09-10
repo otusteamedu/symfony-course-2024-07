@@ -15,6 +15,6 @@ class Controller extends AbstractController
     #[Route(path: '/api/v1/get-user-list', methods: ['GET'])]
     public function __invoke(): Response
     {
-        return $this->render('user-list.twig', ['users' => $this->userManager->getUserListData()]);
+        return $this->render('user-table.twig', ['users' => $this->userManager->getUserListData()]);
     }
 }
