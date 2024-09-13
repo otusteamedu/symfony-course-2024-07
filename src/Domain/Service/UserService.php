@@ -9,11 +9,14 @@ use App\Domain\Model\CreateUserModel;
 use App\Domain\ValueObject\CommunicationChannelEnum;
 use App\Infrastructure\Repository\UserRepository;
 use DateInterval;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class UserService
 {
-    public function __construct(private readonly UserRepository $userRepository)
-    {
+    public function __construct(
+        private readonly UserRepository $userRepository,
+        private readonly UserPasswordHasherInterface $userPasswordHasher,
+    ) {
     }
 
     public function create(CreateUserModel $createUserModel): User
@@ -23,9 +26,10 @@ class UserService
             CommunicationChannelEnum::Phone => (new PhoneUser())->setPhone($createUserModel->communicationMethod),
         };
         $user->setLogin($createUserModel->login);
-        $user->setPassword($createUserModel->password);
+        $user->setPassword($this->userPasswordHasher->hashPassword($user, $createUserModel->password));
         $user->setAge($createUserModel->age);
         $user->setIsActive($createUserModel->isActive);
+        $user->setRoles($createUserModel->roles);
         $this->userRepository->create($user);
 
         return $user;

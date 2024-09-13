@@ -8,6 +8,9 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class CreateUserModel
 {
+    /**
+     * @param string[] $roles
+     */
     public function __construct(
         #[Assert\NotBlank]
         public readonly string $login,
@@ -21,6 +24,7 @@ class CreateUserModel
         public readonly string $password = 'myPass',
         public readonly int $age = 18,
         public readonly bool $isActive = true,
+        public readonly array $roles = [],
     ) {
     }
 }
