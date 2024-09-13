@@ -33,6 +33,9 @@ security:
         - { path: ^/api/v1/user, roles: ROLE_ADMIN, methods: [DELETE] }
         - { path: ^/api/v1/get-user-list, roles: ROLE_VIEW, methods: [GET] }
 
+    role_hierarchy:
+        ROLE_ADMIN: ROLE_VIEW
+
 when@test:
     security:
         password_hashers:
