@@ -34,7 +34,9 @@ security:
         - { path: ^/api/v1/get-user-list, roles: ROLE_VIEW, methods: [GET] }
 
     role_hierarchy:
-        ROLE_ADMIN: ROLE_VIEW
+        ROLE_ADMIN:
+            - ROLE_VIEW
+            - ROLE_GET_LIST
 
 when@test:
     security:
