@@ -38,6 +38,9 @@ security:
             - ROLE_VIEW
             - ROLE_GET_LIST
 
+    access_decision_manager:
+        strategy: consensus
+
 when@test:
     security:
         password_hashers:
