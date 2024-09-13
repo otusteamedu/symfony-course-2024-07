@@ -21,6 +21,7 @@ class Manager
                 'login' => $user->getLogin(),
                 'communicationChannel' => null,
                 'communicationMethod' => null,
+                'roles' => $user->getRoles(),
             ];
             if ($user instanceof PhoneUser) {
                 $result['communicationChannel'] = CommunicationChannelEnum::Phone->value;
