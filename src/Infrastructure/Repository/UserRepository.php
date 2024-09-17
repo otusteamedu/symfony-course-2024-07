@@ -166,4 +166,13 @@ class UserRepository extends AbstractRepository
     {
         return $this->entityManager->getRepository(User::class)->findAll();
     }
+
+    public function updateUserToken(User $user): string
+    {
+        $token = base64_encode(random_bytes(20));
+        $user->setToken($token);
+        $this->flush();
+
+        return $token;
+    }
 }

@@ -191,4 +191,21 @@ class UserService
     {
         $this->userRepository->create($user);
     }
+
+    public function findUserByLogin(string $login): ?User
+    {
+        $users = $this->userRepository->findUsersByLogin($login);
+
+        return $users[0] ?? null;
+    }
+
+    public function updateUserToken(string $login): ?string
+    {
+        $user = $this->findUserByLogin($login);
+        if ($user === null) {
+            return null;
+        }
+
+        return $this->userRepository->updateUserToken($user);
+    }
 }
