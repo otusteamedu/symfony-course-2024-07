@@ -208,4 +208,9 @@ class UserService
 
         return $this->userRepository->updateUserToken($user);
     }
+
+    public function findUserByToken(string $token): ?User
+    {
+        return $this->userRepository->findUserByToken($token);
+    }
 }
