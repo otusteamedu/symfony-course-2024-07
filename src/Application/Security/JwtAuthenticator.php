@@ -5,6 +5,7 @@ namespace App\Application\Security;
 use App\Controller\Exception\AccessDeniedException;
 use App\Controller\Exception\UnauthorizedException;
 use Lexik\Bundle\JWTAuthenticationBundle\Encoder\JWTEncoderInterface;
+use Lexik\Bundle\JWTAuthenticationBundle\Exception\JWTDecodeFailureException;
 use Lexik\Bundle\JWTAuthenticationBundle\TokenExtractor\AuthorizationHeaderTokenExtractor;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -33,7 +34,12 @@ class JwtAuthenticator extends AbstractAuthenticator
         if ($token === null) {
             throw new UnauthorizedException();
         }
-        $tokenData = $this->jwtEncoder->decode($token);
+        try {
+            $tokenData = $this->jwtEncoder->decode($token);
+        } catch (JWTDecodeFailureException $exception) {
+            $message = $exception->getReason() === JWTDecodeFailureException::EXPIRED_TOKEN ? 'Expired token' : '';
+            throw new UnauthorizedException($message);
+        }
         if (!isset($tokenData['username'])) {
             throw new UnauthorizedException();
         }

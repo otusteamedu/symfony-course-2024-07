@@ -33,10 +33,12 @@ class AuthService
     public function getToken(string $login): string
     {
         $user = $this->userService->findUserByLogin($login);
+        $refreshToken = $this->userService->updateUserToken($login);
         $tokenData = [
             'username' => $login,
             'roles' => $user?->getRoles() ?? [],
-            'exp' => time() + $this->tokenTTL,
+            'exp' => time(),
+            'refresh_token' => $refreshToken,
         ];
 
         return $this->jwtEncoder->encode($tokenData);

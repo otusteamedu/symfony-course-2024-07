@@ -213,4 +213,12 @@ class UserService
     {
         return $this->userRepository->findUserByToken($token);
     }
+
+    public function clearUserToken(string $login): void
+    {
+        $user = $this->findUserByLogin($login);
+        if ($user !== null) {
+            $this->userRepository->clearUserToken($user);
+        }
+    }
 }

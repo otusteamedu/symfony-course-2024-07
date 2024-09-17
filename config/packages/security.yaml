@@ -12,6 +12,10 @@ security:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
+        refreshToken:
+            pattern: ^/api/v1/refresh-token
+            stateless: true
+            custom_authenticator: App\Application\Security\ApiTokenAuthenticator
         token:
             pattern: ^/api/v1/get-token
             security: false
