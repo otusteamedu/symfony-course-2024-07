@@ -84,3 +84,7 @@ services:
     App\Application\EventListener\KernelViewEventListener:
         tags:
             - { name: kernel.event_listener, event: kernel.view }
+
+    App\Application\Security\AuthService:
+        arguments:
+            $tokenTTL: '%env(JWT_TTL_SEC)%'
