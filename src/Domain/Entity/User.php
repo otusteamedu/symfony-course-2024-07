@@ -3,10 +3,12 @@
 namespace App\Domain\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\Post;
 use App\Controller\Web\CreateUser\v2\Input\CreateUserDTO;
 use App\Controller\Web\CreateUser\v2\Output\CreatedUserDTO;
 use App\Domain\ApiPlatform\State\UserProcessor;
+use App\Domain\ApiPlatform\State\UserProviderDecorator;
 use App\Domain\ValueObject\CommunicationChannelEnum;
 use App\Domain\ValueObject\RoleEnum;
 use DateInterval;
@@ -31,6 +33,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 #[ORM\UniqueConstraint(name: 'user__login__uniq', columns: ['login'], options: ['where' => '(deleted_at IS NULL)'])]
 #[ApiResource]
 #[Post(input: CreateUserDTO::class, output: CreatedUserDTO::class, processor: UserProcessor::class)]
+#[Get(output: CreatedUserDTO::class, provider: UserProviderDecorator::class)]
 class User implements
     EntityInterface,
     HasMetaTimestampsInterface,
