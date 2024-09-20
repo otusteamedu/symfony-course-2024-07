@@ -4,30 +4,25 @@ namespace App\Domain\ApiPlatform\State;
 
 use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProcessorInterface;
-use App\Domain\Entity\User;
-use App\Infrastructure\Repository\UserRepository;
-use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use App\Controller\Web\CreateUser\v2\Input\CreateUserDTO;
+use App\Controller\Web\CreateUser\v2\Manager;
+use App\Controller\Web\CreateUser\v2\Output\CreatedUserDTO;
 
 /**
- * @implements ProcessorInterface<User, User|void>
+ * @implements ProcessorInterface<CreateUserDTO, CreatedUserDTO|void>
  */
 class UserProcessor implements ProcessorInterface
 {
-    public function __construct(
-        private readonly UserPasswordHasherInterface $userPasswordHasher,
-        private readonly UserRepository $userRepository,
-    ) {
+    public function __construct(private readonly Manager $manager)
+    {
     }
 
     /**
-     * @param User $data
-     * @return User|void
+     * @param CreateUserDTO $data
+     * @return CreatedUserDTO|void
      */
     public function process(mixed $data, Operation $operation, array $uriVariables = [], array $context = [])
     {
-        $data->setPassword($this->userPasswordHasher->hashPassword($data, $data->getPassword()));
-        $this->userRepository->create($data);
-
-        return $data;
+        return $this->manager->create($data);
     }
 }
