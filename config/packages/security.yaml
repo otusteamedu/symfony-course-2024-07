@@ -19,10 +19,12 @@ security:
         token:
             pattern: ^/api/v1/get-token
             security: false
+        apiPlatform:
+            pattern: ^/api-platform$
+            security: false
         main:
             lazy: true
             stateless: true
-            security: false
             custom_authenticator: App\Application\Security\JwtAuthenticator
 
             # activate different ways to authenticate
