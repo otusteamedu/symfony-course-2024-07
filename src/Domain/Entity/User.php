@@ -10,6 +10,7 @@ use ApiPlatform\Metadata\Post;
 use App\Controller\Web\CreateUser\v2\Input\CreateUserDTO;
 use App\Controller\Web\CreateUser\v2\Output\CreatedUserDTO;
 use App\Domain\ApiPlatform\GraphQL\Resolver\UserCollectionResolver;
+use App\Domain\ApiPlatform\GraphQL\Resolver\UserResolver;
 use App\Domain\ApiPlatform\State\UserProcessor;
 use App\Domain\ApiPlatform\State\UserProviderDecorator;
 use App\Domain\ValueObject\CommunicationChannelEnum;
@@ -38,7 +39,8 @@ use Symfony\Component\Security\Core\User\UserInterface;
     graphQlOperations: [
         new Query(),
         new QueryCollection(),
-        new QueryCollection(resolver: UserCollectionResolver::class, name: 'protected')
+        new QueryCollection(resolver: UserCollectionResolver::class, name: 'protected'),
+        new Query(resolver: UserResolver::class, name: 'protected')
     ]
 )]
 #[Post(input: CreateUserDTO::class, output: CreatedUserDTO::class, processor: UserProcessor::class)]
