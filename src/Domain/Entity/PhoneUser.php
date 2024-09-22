@@ -2,10 +2,12 @@
 
 namespace App\Domain\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Table(name: 'phone_user')]
 #[ORM\Entity]
+#[ApiResource]
 class PhoneUser extends User
 {
     #[ORM\Column(type: 'string', length: 20, nullable: false)]

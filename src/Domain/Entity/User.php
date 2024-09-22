@@ -33,7 +33,6 @@ use Symfony\Component\Security\Core\User\UserInterface;
 #[ORM\UniqueConstraint(name: 'user__login__uniq', columns: ['login'], options: ['where' => '(deleted_at IS NULL)'])]
 #[ApiResource]
 #[Post(input: CreateUserDTO::class, output: CreatedUserDTO::class, processor: UserProcessor::class)]
-#[Get(output: CreatedUserDTO::class, provider: UserProviderDecorator::class)]
 class User implements
     EntityInterface,
     HasMetaTimestampsInterface,
@@ -273,6 +272,14 @@ class User implements
     public function getUserIdentifier(): string
     {
         return $this->login;
+    }
+
+    /**
+     * @return Subscription[]
+     */
+    public function getSubscriptionFollowers(): array
+    {
+        return $this->subscriptionFollowers->toArray();
     }
 
     public function toArray(): array
