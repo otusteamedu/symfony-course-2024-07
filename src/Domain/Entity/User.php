@@ -40,7 +40,11 @@ use Symfony\Component\Security\Core\User\UserInterface;
         new Query(),
         new QueryCollection(),
         new QueryCollection(resolver: UserCollectionResolver::class, name: 'protected'),
-        new Query(resolver: UserResolver::class, name: 'protected')
+        new Query(
+            resolver: UserResolver::class,
+            args: ['_id' => ['type' => 'Int'], 'login' => ['type' => 'String']],
+            name: 'protected'
+        ),
     ]
 )]
 #[Post(input: CreateUserDTO::class, output: CreatedUserDTO::class, processor: UserProcessor::class)]
