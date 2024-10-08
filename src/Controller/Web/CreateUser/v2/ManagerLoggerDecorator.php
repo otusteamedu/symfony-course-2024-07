@@ -4,27 +4,21 @@ namespace App\Controller\Web\CreateUser\v2;
 
 use App\Controller\Web\CreateUser\v2\Input\CreateUserDTO;
 use App\Controller\Web\CreateUser\v2\Output\CreatedUserDTO;
-use App\Domain\Model\CreateUserModel;
-use App\Domain\Service\ModelFactory;
-use App\Domain\Service\UserService;
 use Psr\Log\LoggerInterface;
 
-class ManagerLoggerDecorator extends Manager
+class ManagerLoggerDecorator implements ManagerInterface
 {
     public function __construct(
-        /** @var ModelFactory<CreateUserModel> */
-        private readonly ModelFactory $modelFactory,
-        private readonly UserService $userService,
+        private readonly ManagerInterface $manager,
         private readonly LoggerInterface $logger,
     ) {
-        parent::__construct($this->modelFactory, $this->userService);
     }
 
     public function create(CreateUserDTO $createUserDTO): CreatedUserDTO
     {
         $this->addLogs();
 
-        return parent::create($createUserDTO);
+        return $this->manager->create($createUserDTO);
     }
 
     private function addLogs(): void
