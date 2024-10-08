@@ -25,6 +25,7 @@ security:
         main:
             lazy: true
             stateless: true
+            security: false
             custom_authenticator: App\Application\Security\JwtAuthenticator
 
             # activate different ways to authenticate
