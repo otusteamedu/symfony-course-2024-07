@@ -95,3 +95,9 @@ services:
 
     App\Controller\Web\CreateUser\v2\ManagerInterface:
         alias: App\Controller\Web\CreateUser\v2\ManagerLoggerDecorator
+
+    App\Infrastructure\Storage\MetricsStorage:
+        arguments:
+            - graphite
+            - 8125
+            - my_app

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "449c61bf98bec4ae229287e953e77586",
+    "content-hash": "82f1e6818dcd62f4ec13f8f9ac3bc232",
     "packages": [
         {
             "name": "api-platform/core",
@@ -2308,6 +2308,62 @@
                 "source": "https://github.com/php-fig/log/tree/3.0.0"
             },
             "time": "2021-07-14T16:46:02+00:00"
+        },
+        {
+            "name": "slickdeals/statsd",
+            "version": "3.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Slickdeals/statsd-php.git",
+                "reference": "96b8a5e0370e09914adc87513f5c49e1a9289b5a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Slickdeals/statsd-php/zipball/96b8a5e0370e09914adc87513f5c49e1a9289b5a",
+                "reference": "96b8a5e0370e09914adc87513f5c49e1a9289b5a",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">= 7.3 || ^8"
+            },
+            "replace": {
+                "domnikl/statsd": "<=3.0.2"
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "^3.0",
+                "phpunit/phpunit": "^9",
+                "vimeo/psalm": "^4.6"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Domnikl\\Statsd\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Dominik Liebler",
+                    "email": "liebler.dominik@gmail.com"
+                }
+            ],
+            "description": "a PHP client for statsd",
+            "homepage": "https://github.com/Slickdeals/statsd-php",
+            "keywords": [
+                "Metrics",
+                "monitoring",
+                "statistics",
+                "statsd",
+                "udp"
+            ],
+            "support": {
+                "issues": "https://github.com/Slickdeals/statsd-php/issues",
+                "source": "https://github.com/Slickdeals/statsd-php/tree/3.2.0"
+            },
+            "time": "2023-11-24T08:03:36+00:00"
         },
         {
             "name": "symfony/asset",
