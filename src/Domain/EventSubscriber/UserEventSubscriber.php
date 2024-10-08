@@ -12,7 +12,7 @@ class UserEventSubscriber implements EventSubscriberInterface
 {
     public function __construct(
         private readonly UserService $userService,
-        private readonly LoggerInterface $logger,
+        private readonly LoggerInterface $elasticsearchLogger,
     ) {
     }
 
@@ -40,6 +40,6 @@ class UserEventSubscriber implements EventSubscriberInterface
 
     public function onUserIsCreated(UserIsCreatedEvent $event): void
     {
-        $this->logger->info("User is created: id {$event->id}, login {$event->login}");
+        $this->elasticsearchLogger->info("User is created: id {$event->id}, login {$event->login}");
     }
 }
