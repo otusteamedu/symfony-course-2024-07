@@ -88,3 +88,16 @@ services:
     App\Application\Security\AuthService:
         arguments:
             $tokenTTL: '%env(JWT_TTL_SEC)%'
+
+    App\Controller\Web\CreateUser\v2\ManagerLoggerDecorator:
+        arguments:
+            $manager: '@App\Controller\Web\CreateUser\v2\Manager'
+
+    App\Controller\Web\CreateUser\v2\ManagerInterface:
+        alias: App\Controller\Web\CreateUser\v2\ManagerLoggerDecorator
+
+    App\Infrastructure\Storage\MetricsStorage:
+        arguments:
+            - graphite
+            - 8125
+            - my_app
