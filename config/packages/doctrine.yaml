@@ -32,6 +32,33 @@ doctrine:
                 enabled: true
                 parameters:
                     checkTime: true
+        metadata_cache_driver:
+            type: pool
+            pool: doctrine.system_cache_pool
+        query_cache_driver:
+            type: pool
+            pool: doctrine.system_cache_pool
+        result_cache_driver:
+            type: pool
+            pool: doctrine.result_cache_pool
+
+services:
+    doctrine_memcached_provider:
+        class: Memcached
+        factory: Symfony\Component\Cache\Adapter\MemcachedAdapter::createConnection
+        arguments:
+            - '%env(MEMCACHED_DSN)%'
+            - PREFIX_KEY: 'my_app_doctrine'
+
+framework:
+    cache:
+        pools:
+            doctrine.result_cache_pool:
+                adapter: cache.adapter.memcached
+                provider: doctrine_memcached_provider
+            doctrine.system_cache_pool:
+                adapter: cache.adapter.memcached
+                provider: doctrine_memcached_provider
 
 when@test:
     doctrine:
