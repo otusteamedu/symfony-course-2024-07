@@ -11,7 +11,7 @@ use App\Domain\Service\ModelFactory;
 use App\Domain\Service\UserService;
 use App\Domain\ValueObject\CommunicationChannelEnum;
 
-class Manager
+class Manager implements ManagerInterface
 {
     public function __construct(
         /** @var ModelFactory<CreateUserModel> */
