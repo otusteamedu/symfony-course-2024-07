@@ -104,3 +104,23 @@ services:
             - graphite
             - 8125
             - my_app
+
+    redis_client:
+        class: Redis
+        factory: Symfony\Component\Cache\Adapter\RedisAdapter::createConnection
+        arguments:
+            - '%env(REDIS_DSN)%'
+
+    redis_adapter:
+        class: Symfony\Component\Cache\Adapter\RedisAdapter
+        arguments:
+            - '@redis_client'
+            - 'my_app'
+
+    App\Application\Symfony\AdapterCountingDecorator:
+        arguments:
+            $adapter: '@redis_adapter'
+
+    App\Infrastructure\Repository\TweetRepositoryCacheDecorator:
+        arguments:
+            $cacheItemPool: '@App\Application\Symfony\AdapterCountingDecorator'
