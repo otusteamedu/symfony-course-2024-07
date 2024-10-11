@@ -13,4 +13,19 @@ class TweetRepository extends AbstractRepository
     {
         return $this->store($tweet);
     }
+
+    /**
+     * @return Tweet[]
+     */
+    public function getTweetsPaginated(int $page, int $perPage): array
+    {
+        $qb = $this->entityManager->createQueryBuilder();
+        $qb->select('t')
+            ->from(Tweet::class, 't')
+            ->orderBy('t.id', 'DESC')
+            ->setFirstResult($perPage * $page)
+            ->setMaxResults($perPage);
+
+        return $qb->getQuery()->getResult();
+    }
 }

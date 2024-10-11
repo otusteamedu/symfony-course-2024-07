@@ -22,4 +22,12 @@ class TweetService
         $author->addTweet($tweet);
         $this->tweetRepository->create($tweet);
     }
+
+    /**
+     * @return Tweet[]
+     */
+    public function getTweetsPaginated(int $page, int $perPage): array
+    {
+        return $this->tweetRepository->getTweetsPaginated($page, $perPage);
+    }
 }
