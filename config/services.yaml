@@ -123,4 +123,10 @@ services:
 
     App\Infrastructure\Repository\TweetRepositoryCacheDecorator:
         arguments:
-            $cacheItemPool: '@App\Application\Symfony\AdapterCountingDecorator'
+            $cache: '@redis_tag_aware_adapter'
+
+    redis_tag_aware_adapter:
+        class: Symfony\Component\Cache\Adapter\RedisTagAwareAdapter
+        arguments:
+            - '@redis_client'
+            - 'my_app'
