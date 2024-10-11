@@ -3,6 +3,7 @@
 namespace App\Infrastructure\Repository;
 
 use App\Domain\Entity\Tweet;
+use App\Domain\Model\TweetModel;
 
 /**
  * @extends AbstractRepository<Tweet>
@@ -15,7 +16,7 @@ class TweetRepository extends AbstractRepository
     }
 
     /**
-     * @return Tweet[]
+     * @return TweetModel[]
      */
     public function getTweetsPaginated(int $page, int $perPage): array
     {

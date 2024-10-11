@@ -3,7 +3,7 @@
 namespace App\Controller\Web\GetTweet\v1;
 
 use App\Controller\Web\GetTweet\v1\Output\TweetDTO;
-use App\Domain\Entity\Tweet;
+use App\Domain\Model\TweetModel;
 use App\Domain\Service\TweetService;
 
 class Manager
@@ -13,16 +13,16 @@ class Manager
     }
 
     /**
-     * @return Tweet[]
+     * @return TweetModel[]
      */
     public function getTweetsPaginated(int $page, int $perPage): array
     {
         return array_map(
-            static fn (Tweet $tweet) => new TweetDTO(
-                $tweet->getId(),
-                $tweet->getText(),
-                $tweet->getAuthor()->getLogin(),
-                $tweet->getCreatedAt()->format('Y-m-d H:i:s'),
+            static fn (TweetModel $tweet) => new TweetDTO(
+                $tweet->id,
+                $tweet->text,
+                $tweet->author,
+                $tweet->createdAt->format('Y-m-d H:i:s'),
             ),
             $this->tweetService->getTweetsPaginated($page, $perPage)
         );

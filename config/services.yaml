@@ -96,6 +96,9 @@ services:
     App\Controller\Web\CreateUser\v2\ManagerInterface:
         alias: App\Controller\Web\CreateUser\v2\ManagerLoggerDecorator
 
+    App\Domain\Repository\TweetRepositoryInterface:
+        alias: App\Infrastructure\Repository\TweetRepositoryCacheDecorator
+
     App\Infrastructure\Storage\MetricsStorage:
         arguments:
             - graphite

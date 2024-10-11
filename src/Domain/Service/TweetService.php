@@ -4,11 +4,12 @@ namespace App\Domain\Service;
 
 use App\Domain\Entity\Tweet;
 use App\Domain\Entity\User;
-use App\Infrastructure\Repository\TweetRepository;
+use App\Domain\Model\TweetModel;
+use App\Domain\Repository\TweetRepositoryInterface;
 
 class TweetService
 {
-    public function __construct(private readonly TweetRepository $tweetRepository)
+    public function __construct(private readonly TweetRepositoryInterface $tweetRepository)
     {
     }
 
@@ -24,7 +25,7 @@ class TweetService
     }
 
     /**
-     * @return Tweet[]
+     * @return TweetModel[]
      */
     public function getTweetsPaginated(int $page, int $perPage): array
     {

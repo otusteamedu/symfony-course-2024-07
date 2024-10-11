@@ -87,6 +87,12 @@ services:
     ports:
       - 11211:11211
 
+  redis:
+    container_name: 'redis'
+    image: redis:alpine
+    ports:
+      - 6379:6379
+
 volumes:
   dump:
   postgresql:
