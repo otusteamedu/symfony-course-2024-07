@@ -96,8 +96,37 @@ services:
     App\Controller\Web\CreateUser\v2\ManagerInterface:
         alias: App\Controller\Web\CreateUser\v2\ManagerLoggerDecorator
 
+    App\Domain\Repository\TweetRepositoryInterface:
+        alias: App\Infrastructure\Repository\TweetRepositoryCacheDecorator
+
     App\Infrastructure\Storage\MetricsStorage:
         arguments:
             - graphite
             - 8125
             - my_app
+
+    redis_client:
+        class: Redis
+        factory: Symfony\Component\Cache\Adapter\RedisAdapter::createConnection
+        arguments:
+            - '%env(REDIS_DSN)%'
+
+    redis_adapter:
+        class: Symfony\Component\Cache\Adapter\RedisAdapter
+        arguments:
+            - '@redis_client'
+            - 'my_app'
+
+    App\Application\Symfony\AdapterCountingDecorator:
+        arguments:
+            $adapter: '@redis_adapter'
+
+    App\Infrastructure\Repository\TweetRepositoryCacheDecorator:
+        arguments:
+            $cache: '@redis_tag_aware_adapter'
+
+    redis_tag_aware_adapter:
+        class: Symfony\Component\Cache\Adapter\RedisTagAwareAdapter
+        arguments:
+            - '@redis_client'
+            - 'my_app'
