@@ -32,4 +32,18 @@ class RabbitMqBus
 
         return false;
     }
+
+    public function publishMultipleToExchange(AmqpExchangeEnum $exchange, array $messages, ?string $routingKey = null, ?array $additionalProperties = null): bool
+    {
+        $sentCount = 0;
+        if (isset($this->producers[$exchange->value])) {
+            foreach ($messages as $message) {
+                $serializedMessage = $this->serializer->serialize($message, 'json', [AbstractObjectNormalizer::SKIP_NULL_VALUES => true]);
+                $this->producers[$exchange->value]->publish($serializedMessage, $routingKey ?? '', $additionalProperties ?? []);
+                $sentCount++;
+            }
+        }
+
+        return $sentCount;
+    }
 }
