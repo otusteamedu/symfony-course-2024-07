@@ -32,6 +32,7 @@ class Consumer extends AbstractConsumer
         }
 
         $this->followerService->addFollowersSync($user, $message->followerLogin, $message->count);
+        throw new \RuntimeException('Something happens');
 
         return self::MSG_ACK;
     }
