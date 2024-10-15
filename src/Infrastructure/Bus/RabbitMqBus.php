@@ -32,4 +32,16 @@ class RabbitMqBus
 
         return false;
     }
+
+    public function publishMultipleToExchange(AmqpExchangeEnum $exchange, array $messages, ?string $routingKey = null, ?array $additionalProperties = null): bool
+    {
+        $sentCount = 0;
+        foreach ($messages as $message) {
+            if ($this->publishToExchange($exchange, $message, $routingKey, $additionalProperties)) {
+                $sentCount++;
+            }
+        }
+
+        return $sentCount;
+    }
 }
