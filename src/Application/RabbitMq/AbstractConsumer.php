@@ -5,10 +5,10 @@ namespace App\Application\RabbitMq;
 use Doctrine\ORM\EntityManagerInterface;
 use OldSound\RabbitMqBundle\RabbitMq\ConsumerInterface;
 use PhpAmqpLib\Message\AMQPMessage;
-use Symfony\Component\Serializer\Exception\UnsupportedFormatException;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Contracts\Service\Attribute\Required;
+use Throwable;
 
 abstract class AbstractConsumer implements ConsumerInterface
 {
@@ -48,7 +48,7 @@ abstract class AbstractConsumer implements ConsumerInterface
             }
 
             return $this->handle($message);
-        } catch (UnsupportedFormatException $e) {
+        } catch (Throwable $e) {
             return $this->reject($e->getMessage());
         } finally {
             $this->entityManager->clear();
