@@ -2,6 +2,8 @@
 
 namespace App\Domain\Service;
 
+use App\Domain\Bus\AddFollowersBusInterface;
+use App\Domain\DTO\AddFollowersDTO;
 use App\Domain\Entity\User;
 use App\Domain\Model\CreateUserModel;
 use App\Domain\ValueObject\CommunicationChannelEnum;
@@ -11,11 +13,12 @@ class FollowerService
     public function __construct(
         private readonly UserService $userService,
         private readonly SubscriptionService $subscriptionService,
+        private readonly AddFollowersBusInterface $addFollowersBus,
     ) {
 
     }
 
-    public function addFollowers(User $user, string $followerLoginPrefix, int $count): int
+    public function addFollowersSync(User $user, string $followerLoginPrefix, int $count): int
     {
         $createdFollowers = 0;
         for ($i = 0; $i < $count; $i++) {
@@ -36,5 +39,10 @@ class FollowerService
         }
 
         return $createdFollowers;
+    }
+
+    public function addFollowersAsync(AddFollowersDTO $addFollowersDTO): int
+    {
+        return $this->addFollowersBus->sendAddFollowersMessage($addFollowersDTO) ? $addFollowersDTO->count : 0;
     }
 }
