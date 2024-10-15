@@ -3,6 +3,7 @@
 namespace App\Controller\Web\AddFollowers\v1;
 
 use App\Controller\Web\AddFollowers\v1\Input\AddFollowersDTO;
+use App\Domain\DTO\AddFollowersDTO as InternalAddFollowersDTO;
 use App\Domain\Entity\User;
 use App\Domain\Service\FollowerService;
 
@@ -14,6 +15,18 @@ class Manager
 
     public function addFollowers(User $author, AddFollowersDTO $addFollowersDTO): int
     {
-        return $this->followerService->addFollowers($author, $addFollowersDTO->followerLoginPrefix, $addFollowersDTO->count);
+        return $addFollowersDTO->async ?
+            $this->followerService->addFollowersAsync(
+                new InternalAddFollowersDTO(
+                    $author->getId(),
+                    $addFollowersDTO->followerLoginPrefix,
+                    $addFollowersDTO->count
+                )
+            ) :
+            $this->followerService->addFollowersSync(
+                $author,
+                $addFollowersDTO->followerLoginPrefix,
+                $addFollowersDTO->count
+            );
     }
 }
