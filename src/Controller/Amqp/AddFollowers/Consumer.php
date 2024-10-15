@@ -31,8 +31,11 @@ class Consumer extends AbstractConsumer
             return $this->reject(sprintf('User ID %s was not found', $message->userId));
         }
 
+        if ($message->count === 5) {
+            sleep(1000);
+        }
+
         $this->followerService->addFollowersSync($user, $message->followerLogin, $message->count);
-        throw new \RuntimeException('Something happens');
 
         return self::MSG_ACK;
     }
