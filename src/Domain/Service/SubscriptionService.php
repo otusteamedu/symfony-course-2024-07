@@ -17,8 +17,6 @@ class SubscriptionService
         $subscription = new Subscription();
         $subscription->setAuthor($author);
         $subscription->setFollower($follower);
-        $subscription->setCreatedAt();
-        $subscription->setUpdatedAt();
         $author->addSubscriptionFollower($subscription);
         $follower->addSubscriptionAuthor($subscription);
         $this->subscriptionRepository->create($subscription);
