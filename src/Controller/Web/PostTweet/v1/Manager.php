@@ -23,7 +23,7 @@ class Manager
             return false;
         }
 
-        $this->tweetService->postTweet($user, $tweetDTO->text);
+        $this->tweetService->postTweet($user, $tweetDTO->text, $tweetDTO->async);
 
         return true;
     }
