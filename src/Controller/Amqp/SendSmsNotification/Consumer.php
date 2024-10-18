@@ -1,18 +1,18 @@
 <?php
 
-namespace App\Controller\Amqp\AddFollowers;
+namespace App\Controller\Amqp\SendSmsNotification;
 
 use App\Application\RabbitMq\AbstractConsumer;
-use App\Controller\Amqp\AddFollowers\Input\Message;
-use App\Domain\Entity\User;
-use App\Domain\Service\FollowerService;
+use App\Controller\Amqp\SendSmsNotification\Input\Message;
+use App\Domain\Entity\PhoneUser;
+use App\Domain\Service\SmsNotificationService;
 use App\Domain\Service\UserService;
 
 class Consumer extends AbstractConsumer
 {
     public function __construct(
         private readonly UserService $userService,
-        private readonly FollowerService $followerService,
+        private readonly SmsNotificationService $emailNotificationService,
     ) {
     }
 
@@ -27,11 +27,11 @@ class Consumer extends AbstractConsumer
     protected function handle($message): int
     {
         $user = $this->userService->findUserById($message->userId);
-        if (!($user instanceof User)) {
-            return $this->reject(sprintf('User ID %s was not found', $message->userId));
+        if (!($user instanceof PhoneUser)) {
+            return $this->reject(sprintf('User ID %s was not found or does not use phone', $message->userId));
         }
 
-        $this->followerService->addFollowersSync($user, $message->followerLogin, $message->count);
+        $this->emailNotificationService->saveSmsNotification($user->getPhone(), $message->text);
 
         return self::MSG_ACK;
     }
