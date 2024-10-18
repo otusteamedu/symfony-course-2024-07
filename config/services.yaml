@@ -137,3 +137,53 @@ services:
             - [ 'registerProducer', [ !php/enum App\Infrastructure\Bus\AmqpExchangeEnum::SendNotification, '@old_sound_rabbit_mq.send_notification_producer' ] ]
             - [ 'registerProducer', [ !php/enum App\Infrastructure\Bus\AmqpExchangeEnum::PublishTweet, '@old_sound_rabbit_mq.publish_tweet_producer' ] ]
             - [ 'registerProducer', [ !php/enum App\Infrastructure\Bus\AmqpExchangeEnum::UpdateFeed, '@old_sound_rabbit_mq.update_feed_producer' ] ]
+
+    App\Controller\Amqp\UpdateFeed\Consumer0:
+        class: App\Controller\Amqp\UpdateFeed\Consumer
+        arguments:
+            $key: 'update_feed_0'
+
+    App\Controller\Amqp\UpdateFeed\Consumer1:
+        class: App\Controller\Amqp\UpdateFeed\Consumer
+        arguments:
+            $key: 'update_feed_1'
+
+    App\Controller\Amqp\UpdateFeed\Consumer2:
+        class: App\Controller\Amqp\UpdateFeed\Consumer
+        arguments:
+            $key: 'update_feed_2'
+
+    App\Controller\Amqp\UpdateFeed\Consumer3:
+        class: App\Controller\Amqp\UpdateFeed\Consumer
+        arguments:
+            $key: 'update_feed_3'
+
+    App\Controller\Amqp\UpdateFeed\Consumer4:
+        class: App\Controller\Amqp\UpdateFeed\Consumer
+        arguments:
+            $key: 'update_feed_4'
+
+    App\Controller\Amqp\UpdateFeed\Consumer5:
+        class: App\Controller\Amqp\UpdateFeed\Consumer
+        arguments:
+            $key: 'update_feed_5'
+
+    App\Controller\Amqp\UpdateFeed\Consumer6:
+        class: App\Controller\Amqp\UpdateFeed\Consumer
+        arguments:
+            $key: 'update_feed_6'
+
+    App\Controller\Amqp\UpdateFeed\Consumer7:
+        class: App\Controller\Amqp\UpdateFeed\Consumer
+        arguments:
+            $key: 'update_feed_7'
+
+    App\Controller\Amqp\UpdateFeed\Consumer8:
+        class: App\Controller\Amqp\UpdateFeed\Consumer
+        arguments:
+            $key: 'update_feed_8'
+
+    App\Controller\Amqp\UpdateFeed\Consumer9:
+        class: App\Controller\Amqp\UpdateFeed\Consumer
+        arguments:
+            $key: 'update_feed_9'
