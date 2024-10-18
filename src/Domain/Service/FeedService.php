@@ -38,13 +38,18 @@ class FeedService
         $followers = $this->subscriptionService->getFollowers($tweet->authorId);
 
         foreach ($followers as $follower) {
-            $this->feedRepository->putTweetToReaderFeed($tweet, $follower);
-            $sendNotificationDTO = new SendNotificationDTO(
-                $follower->getId(),
-                $tweet->text,
-                $follower instanceof EmailUser ? CommunicationChannelEnum::Email : CommunicationChannelEnum::Phone
-            );
-            $this->sendNotificationBus->sendNotification($sendNotificationDTO);
+            $this->materializeTweet($tweet, $follower);
         }
+    }
+
+    public function materializeTweet(TweetModel $tweet, User $follower): void
+    {
+        $this->feedRepository->putTweetToReaderFeed($tweet, $follower);
+        $sendNotificationDTO = new SendNotificationDTO(
+            $follower->getId(),
+            $tweet->text,
+            $follower instanceof EmailUser ? CommunicationChannelEnum::Email : CommunicationChannelEnum::Phone
+        );
+        $this->sendNotificationBus->sendNotification($sendNotificationDTO);
     }
 }
