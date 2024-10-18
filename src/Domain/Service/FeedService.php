@@ -3,8 +3,12 @@
 namespace App\Domain\Service;
 
 use App\Domain\Bus\PublishTweetBusInterface;
+use App\Domain\Bus\SendNotificationBusInterface;
+use App\Domain\DTO\SendNotificationDTO;
+use App\Domain\Entity\EmailUser;
 use App\Domain\Entity\User;
 use App\Domain\Model\TweetModel;
+use App\Domain\ValueObject\CommunicationChannelEnum;
 use App\Infrastructure\Repository\FeedRepository;
 
 class FeedService
@@ -13,6 +17,7 @@ class FeedService
         private readonly FeedRepository $feedRepository,
         private readonly SubscriptionService $subscriptionService,
         private readonly PublishTweetBusInterface $publishTweetBus,
+        private readonly SendNotificationBusInterface $sendNotificationBus,
     ) {
     }
 
@@ -34,6 +39,12 @@ class FeedService
 
         foreach ($followers as $follower) {
             $this->feedRepository->putTweetToReaderFeed($tweet, $follower);
+            $sendNotificationDTO = new SendNotificationDTO(
+                $follower->getId(),
+                $tweet->text,
+                $follower instanceof EmailUser ? CommunicationChannelEnum::Email : CommunicationChannelEnum::Phone
+            );
+            $this->sendNotificationBus->sendNotification($sendNotificationDTO);
         }
     }
 }

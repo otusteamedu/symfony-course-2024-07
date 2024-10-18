@@ -134,3 +134,5 @@ services:
     App\Infrastructure\Bus\RabbitMqBus:
         calls:
             - [ 'registerProducer', [ !php/enum App\Infrastructure\Bus\AmqpExchangeEnum::AddFollowers, '@old_sound_rabbit_mq.add_followers_producer' ] ]
+            - [ 'registerProducer', [ !php/enum App\Infrastructure\Bus\AmqpExchangeEnum::SendNotification, '@old_sound_rabbit_mq.send_notification_producer' ] ]
+            - [ 'registerProducer', [ !php/enum App\Infrastructure\Bus\AmqpExchangeEnum::PublishTweet, '@old_sound_rabbit_mq.publish_tweet_producer' ] ]
