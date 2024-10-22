@@ -12,6 +12,9 @@ fos_elastica:
                     insert: false
                     update: true
                     delete: true
+                elastica_to_model_transformer:
+                    query_builder_method: createIsActiveQueryBuilder
+                    ignore_missing: true
             serializer:
                 groups: [elastica]
         tweet:

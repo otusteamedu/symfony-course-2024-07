@@ -7,6 +7,7 @@ use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GraphQl\Query;
 use ApiPlatform\Metadata\GraphQl\QueryCollection;
 use ApiPlatform\Metadata\Post;
+use App\Application\Doctrine\UserRepository;
 use App\Controller\Web\CreateUser\v2\Input\CreateUserDTO;
 use App\Controller\Web\CreateUser\v2\Output\CreatedUserDTO;
 use App\Domain\ApiPlatform\GraphQL\Resolver\UserCollectionResolver;
@@ -25,7 +26,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ORM\Table(name: '`user`')]
-#[ORM\Entity]
+#[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\HasLifecycleCallbacks]
 #[ORM\InheritanceType('SINGLE_TABLE')]
 #[ORM\DiscriminatorColumn(name: 'communication_channel', type: 'string', enumType: CommunicationChannelEnum::class)]
