@@ -187,3 +187,7 @@ services:
         class: App\Controller\Amqp\UpdateFeed\Consumer
         arguments:
             $key: 'update_feed_9'
+
+    App\Infrastructure\Repository\UserRepository:
+        arguments:
+            $finder: '@fos_elastica.finder.user'

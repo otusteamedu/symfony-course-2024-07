@@ -226,4 +226,12 @@ class UserService
             $this->userRepository->clearUserToken($user);
         }
     }
+
+    /**
+     * @return User[]
+     */
+    public function findUsersByQuery(string $query, int $perPage, int $page): array
+    {
+        return $this->userRepository->findUsersByQuery($query, $perPage, $page);
+    }
 }
