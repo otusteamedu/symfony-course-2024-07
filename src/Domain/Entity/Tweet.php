@@ -4,6 +4,7 @@ namespace App\Domain\Entity;
 
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ORM\Table(name: 'tweet')]
 #[ORM\Entity]
@@ -14,13 +15,16 @@ class Tweet implements EntityInterface
     #[ORM\Column(name: 'id', type: 'bigint', unique: true)]
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'IDENTITY')]
+    #[Groups(['elastica'])]
     private ?int $id = null;
 
     #[ORM\ManyToOne(targetEntity: 'User', inversedBy: 'tweets')]
     #[ORM\JoinColumn(name: 'author_id', referencedColumnName: 'id')]
+    #[Groups(['elastica'])]
     private User $author;
 
     #[ORM\Column(type: 'string', length: 140, nullable: false)]
+    #[Groups(['elastica'])]
     private string $text;
 
     #[ORM\Column(name: 'created_at', type: 'datetime', nullable: false)]

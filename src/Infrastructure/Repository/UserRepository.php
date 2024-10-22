@@ -6,13 +6,22 @@ use App\Domain\Entity\User;
 use DateInterval;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\AbstractQuery;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\NonUniqueResultException;
+use FOS\ElasticaBundle\Finder\PaginatedFinderInterface;
 
 /**
  * @extends AbstractRepository<User>
  */
 class UserRepository extends AbstractRepository
 {
+    public function __construct(
+        EntityManagerInterface $entityManager,
+        private readonly PaginatedFinderInterface $finder,
+    ) {
+        parent::__construct($entityManager);
+    }
+
     public function create(User $user): int
     {
         return $this->store($user);
@@ -188,5 +197,17 @@ class UserRepository extends AbstractRepository
     {
         $user->setToken(null);
         $this->flush();
+    }
+
+    /**
+     * @return User[]
+     */
+    public function findUsersByQuery(string $query, int $perPage, int $page): array
+    {
+        $paginatedResult = $this->finder->findPaginated($query.'~2');
+        $paginatedResult->setMaxPerPage($perPage);
+        $paginatedResult->setCurrentPage($page);
+
+        return [...$paginatedResult->getCurrentPageResults()];
     }
 }
