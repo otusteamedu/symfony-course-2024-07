@@ -12,3 +12,17 @@ fos_elastica:
                 age: ~
                 phone: ~
                 email: ~
+        tweet:
+            persistence:
+                driver: orm
+                model: App\Domain\Entity\Tweet
+            properties:
+                author:
+                    type: nested
+                    properties:
+                        name:
+                            property_path: login
+                        age: ~
+                        phone: ~
+                        email: ~
+                text: ~
