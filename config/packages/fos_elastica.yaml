@@ -10,3 +10,5 @@ fos_elastica:
             properties:
                 login: ~
                 age: ~
+                phone: ~
+                email: ~
