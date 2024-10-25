@@ -85,7 +85,12 @@ class UserServiceTest extends TestCase
     private function prepareUserService(): UserService
     {
         $userRepository = Mockery::mock(UserRepository::class);
-        $userRepository->shouldIgnoreMissing();
+        $userRepository->shouldReceive('create')->with(
+            Mockery::on(static function($user) {
+                $user->setId(1);
+                return true;
+            })
+        );
         $userPasswordHasher = Mockery::mock(UserPasswordHasherInterface::class);
         $userPasswordHasher->shouldReceive('hashPassword')
             ->andReturn(self::PASSWORD_HASH);

@@ -126,7 +126,7 @@ class User implements
         $this->subscriptionFollowers = new ArrayCollection();
     }
 
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
     }
