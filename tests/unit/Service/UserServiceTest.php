@@ -8,6 +8,7 @@ use App\Domain\Model\CreateUserModel;
 use App\Domain\Service\UserService;
 use App\Domain\ValueObject\CommunicationChannelEnum;
 use App\Infrastructure\Repository\UserRepository;
+use DateTime;
 use Generator;
 use Mockery;
 use PHPUnit\Framework\TestCase;
@@ -23,10 +24,14 @@ class UserServiceTest extends TestCase
 
     /**
      * @dataProvider createTestCases
+     * @group time-sensitive
      */
     public function testCreate(CreateUserModel $createUserModel, array $expectedData): void
     {
         $userService = $this->prepareUserService();
+        $expectedData['createdAt'] = DateTime::createFromFormat('U', (string)time())->format('Y-m-d H:i:s');
+        $expectedData['updatedAt'] = DateTime::createFromFormat('U', (string)time())->format('Y-m-d H:i:s');
+        sleep(5);
 
         $user = $userService->create($createUserModel);
 
@@ -39,6 +44,8 @@ class UserServiceTest extends TestCase
             'age' => $user->getAge(),
             'isActive' => $user->isActive(),
             'roles' => $user->getRoles(),
+            'createdAt' => $user->getCreatedAt()->format('Y-m-d H:i:s'),
+            'updatedAt' => $user->getUpdatedAt()->format('Y-m-d H:i:s'),
         ];
         static::assertSame($expectedData, $actualData);
     }
@@ -88,6 +95,9 @@ class UserServiceTest extends TestCase
         $userRepository->shouldReceive('create')->with(
             Mockery::on(static function($user) {
                 $user->setId(1);
+                $user->setCreatedAt();
+                $user->setUpdatedAt();
+
                 return true;
             })
         );
