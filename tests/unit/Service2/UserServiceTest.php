@@ -1,6 +1,6 @@
 <?php
 
-namespace UnitTests\Service;
+namespace UnitTests\Service2;
 
 use App\Domain\Entity\EmailUser;
 use App\Domain\Entity\PhoneUser;
