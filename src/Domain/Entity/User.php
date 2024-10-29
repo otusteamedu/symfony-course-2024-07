@@ -152,7 +152,7 @@ class User implements
 
     #[ORM\PrePersist]
     public function setCreatedAt(): void {
-        $this->createdAt = new DateTime();
+        $this->createdAt = DateTime::createFromFormat('U', (string)time());
     }
 
     public function getUpdatedAt(): DateTime {
@@ -162,7 +162,7 @@ class User implements
     #[ORM\PrePersist]
     #[ORM\PreUpdate]
     public function setUpdatedAt(): void {
-        $this->updatedAt = new DateTime();
+        $this->updatedAt = DateTime::createFromFormat('U', (string)time());
     }
 
     public function getDeletedAt(): ?DateTime
