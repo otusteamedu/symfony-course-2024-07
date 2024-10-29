@@ -7,11 +7,13 @@ use App\Domain\Service\UserService;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 final class AddFollowersCommand extends Command
 {
     private const DEFAULT_FOLLOWERS = 10;
+    private const DEFAULT_LOGIN_PREFIX = 'Reader #';
 
     public function __construct(
         private readonly UserService $userService,
@@ -23,9 +25,11 @@ final class AddFollowersCommand extends Command
     protected function configure(): void
     {
         $this->setName('followers:add')
+            ->setHidden()
             ->setDescription('Adds followers to author')
             ->addArgument('authorId', InputArgument::REQUIRED, 'ID of author')
-            ->addArgument('count', InputArgument::OPTIONAL, 'How many followers should be added');
+            ->addArgument('count', InputArgument::OPTIONAL, 'How many followers should be added')
+            ->addOption('login', 'l', InputOption::VALUE_REQUIRED, 'Follower login prefix');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -44,7 +48,9 @@ final class AddFollowersCommand extends Command
             return self::FAILURE;
         }
 
-        $result = $this->followerService->addFollowersSync($user, "Reader #{$authorId}", $count);
+        $login = $input->getOption('login') ?? self::DEFAULT_LOGIN_PREFIX;
+
+        $result = $this->followerService->addFollowersSync($user, $login.$authorId, $count);
         $output->write("<info>$result followers were created</info>\n");
 
         return self::SUCCESS;
