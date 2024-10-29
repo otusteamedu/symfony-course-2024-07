@@ -53,16 +53,8 @@ final class AddFollowersCommand extends Command
 
         $login = $input->getOption('login') ?? self::DEFAULT_LOGIN_PREFIX;
 
-        $result = 0;
-        $progressBar = new ProgressBar($output, $count);
-        $progressBar->start();
-        for ($i = 1; $i <= $count; $i++) {
-            $result += $this->followerService->addFollowersSync($user, $login.$authorId.$i, 1);
-            usleep(200000);
-            $progressBar->advance();
-        }
-        $progressBar->finish();
-        $output->write("\n<info>$result followers were created</info>\n");
+        $result = $this->followerService->addFollowersSync($user, $login.$authorId, $count);
+        $output->write("<info>$result followers were created</info>\n");
 
         return self::SUCCESS;
     }
