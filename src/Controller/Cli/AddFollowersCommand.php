@@ -6,7 +6,6 @@ use App\Domain\Service\FollowerService;
 use App\Domain\Service\UserService;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Command\SignalableCommandInterface;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -14,7 +13,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\Question;
 
 #[AsCommand(name: self::FOLLOWERS_ADD_COMMAND_NAME, description: 'Add followers to author', hidden: true)]
-final class AddFollowersCommand extends Command implements SignalableCommandInterface
+final class AddFollowersCommand extends Command
 {
     public const FOLLOWERS_ADD_COMMAND_NAME = 'followers:add';
 
@@ -62,17 +61,5 @@ final class AddFollowersCommand extends Command implements SignalableCommandInte
         $output->write("<info>$result followers were created</info>\n");
 
         return self::SUCCESS;
-    }
-
-    public function getSubscribedSignals(): array
-    {
-        return [SIGINT, SIGTERM];
-    }
-
-    public function handleSignal(int $signal, false|int $previousExitCode = 0): int|false
-    {
-        echo $signal;
-
-        return false;
     }
 }
