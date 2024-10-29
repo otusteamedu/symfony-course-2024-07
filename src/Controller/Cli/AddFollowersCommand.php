@@ -6,6 +6,7 @@ use App\Domain\Service\FollowerService;
 use App\Domain\Service\UserService;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Command\LockableTrait;
+use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -37,13 +38,6 @@ final class AddFollowersCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        if (!$this->lock()) {
-            $output->writeln('<info>Command is already running.</info>');
-
-            return self::SUCCESS;
-        }
-        sleep(100);
-
         $authorId = (int)$input->getArgument('authorId');
         $user = $this->userService->findUserById($authorId);
 
@@ -60,8 +54,16 @@ final class AddFollowersCommand extends Command
 
         $login = $input->getOption('login') ?? self::DEFAULT_LOGIN_PREFIX;
 
-        $result = $this->followerService->addFollowersSync($user, $login.$authorId, $count);
-        $output->write("<info>$result followers were created</info>\n");
+        $result = 0;
+        $progressBar = new ProgressBar($output, $count);
+        $progressBar->start();
+        for ($i = 1; $i <= $count; $i++) {
+            $result += $this->followerService->addFollowersSync($user, $login.$authorId.$i, 1);
+            usleep(200000);
+            $progressBar->advance();
+        }
+        $progressBar->finish();
+        $output->write("\n<info>$result followers were created</info>\n");
 
         return self::SUCCESS;
     }
