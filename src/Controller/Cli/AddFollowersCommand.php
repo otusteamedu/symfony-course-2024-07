@@ -6,11 +6,11 @@ use App\Domain\Service\FollowerService;
 use App\Domain\Service\UserService;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Question\Question;
 
 #[AsCommand(name: self::FOLLOWERS_ADD_COMMAND_NAME, description: 'Add followers to author', hidden: true)]
 final class AddFollowersCommand extends Command
@@ -31,7 +31,6 @@ final class AddFollowersCommand extends Command
     {
         $this->setName('followers:add')
             ->addArgument('authorId', InputArgument::REQUIRED, 'ID of author')
-            ->addArgument('count', InputArgument::OPTIONAL, 'How many followers should be added')
             ->addOption('login', 'l', InputOption::VALUE_REQUIRED, 'Follower login prefix');
     }
 
@@ -45,7 +44,10 @@ final class AddFollowersCommand extends Command
             return self::FAILURE;
         }
 
-        $count = (int)($input->getArgument('count') ?? self::DEFAULT_FOLLOWERS);
+        $helper = $this->getHelper('question');
+        $question = new Question('How many followers you want to add?', self::DEFAULT_FOLLOWERS);
+        $count = (int)$helper->ask($input, $output, $question);
+
         if ($count < 0) {
             $output->write("<error>Count should be positive integer</error>\n");
             return self::FAILURE;

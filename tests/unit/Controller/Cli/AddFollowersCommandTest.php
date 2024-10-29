@@ -9,6 +9,8 @@ use App\Domain\Service\UserService;
 use Mockery;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\Console\Helper\HelperSet;
+use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Tester\CommandTester;
 
 class AddFollowersCommandTest extends TestCase
@@ -25,15 +27,14 @@ class AddFollowersCommandTest extends TestCase
     {
         $authorId = 1;
         $command = $this->prepareCommand($authorId, $login, $followersCount ?? self::DEFAULT_FOLLOWERS_COUNT);
+        $command->setHelperSet(new HelperSet([new QuestionHelper()]));
         $commandTester = new CommandTester($command);
-
         $params = ['authorId' => self::TEST_AUTHOR_ID, '--login' => $login];
-        if ($followersCount !== null) {
-            $params['count'] = $followersCount;
-        }
+        $inputs = $followersCount === null ? ["\n"] : ["$followersCount\n"];
+        $commandTester->setInputs($inputs);
         $commandTester->execute($params);
         $output = $commandTester->getDisplay();
-        static::assertSame($expected, $output);
+        static::assertStringEndsWith($expected, $output);
     }
 
     private function prepareCommand(int $authorId, string $login, int $count): AddFollowersCommand
