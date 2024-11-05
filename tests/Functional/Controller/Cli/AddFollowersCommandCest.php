@@ -15,15 +15,9 @@ class AddFollowersCommandCest
      */
     public function testExecuteReturnsResult(FunctionalTester $I, Example $example): void
     {
-        $authorId = $I->haveInRepository(PhoneUser::class, [
-            'login' => 'admin',
-            'password' => 'password',
-            'age' => 18,
-            'isActive' => true,
-            'roles' => [],
-            'phone' => '+1234567890'
-        ]);
-        $params = ['authorId' => $authorId, '--login' => $example['login']];
+        /** @var PhoneUser $author */
+        $author = $I->have(PhoneUser::class);
+        $params = ['authorId' => $author->getId(), '--login' => $example['login']];
         $inputs = $example['followersCount'] === null ? ["\n"] : [$example['followersCount']."\n"];
         $output = $I->runSymfonyConsoleCommand(self::COMMAND, $params, $inputs, $example['exitCode']);
         $I->assertStringEndsWith($example['expected'], $output);
