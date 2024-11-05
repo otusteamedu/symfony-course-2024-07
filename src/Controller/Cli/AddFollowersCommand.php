@@ -56,7 +56,6 @@ final class AddFollowersCommand extends Command
         $login = $input->getOption('login') ?? self::DEFAULT_LOGIN_PREFIX;
 
         $output->write('<info>Started</info>');
-        sleep(100);
         $result = $this->followerService->addFollowersSync($user, $login.$authorId, $count);
         $output->write("<info>$result followers were created</info>\n");
 
