@@ -54,6 +54,7 @@
         "psr-4": {
             "UnitTests\\": "tests/Unit",
             "FunctionalTests\\": "tests/Functional",
+            "AcceptanceTests\\": "tests/Acceptance",
             "Support\\": "tests/Support"
         }
     },

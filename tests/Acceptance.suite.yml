@@ -6,8 +6,10 @@
 actor: AcceptanceTester
 modules:
     enabled:
-        - PhpBrowser:
-            url: https://localhost:8000
+        - REST:
+              url: http://nginx:80
+              depends: PhpBrowser
+              part: Json
 # Add Codeception\Step\Retry trait to AcceptanceTester to enable retries
 step_decorators:
     - Codeception\Step\ConditionalAssertion
