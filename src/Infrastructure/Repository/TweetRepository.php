@@ -29,4 +29,22 @@ class TweetRepository extends AbstractRepository
 
         return $qb->getQuery()->enableResultCache(null, "tweets_{$page}_{$perPage}")->getResult();
     }
+
+    /**
+     * @param int[] $authorIds
+     * @return Tweet[]
+     */
+    public function getTweetsForAuthorIds(array $authorIds, int $count): array
+    {
+        $qb = $this->entityManager->createQueryBuilder();
+        $qb->select('t')
+            ->from(Tweet::class, 't')
+            ->where($qb->expr()->in('IDENTITY(t.author)', ':authorIds'))
+            ->orderBy('t.createdAt', 'DESC')
+            ->setMaxResults($count);
+
+        $qb->setParameter('authorIds', $authorIds);
+
+        return $qb->getQuery()->getResult();
+    }
 }

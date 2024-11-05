@@ -14,6 +14,6 @@ modules:
               depends: Symfony
               cleanup: true
         - DataFactory:
-            depends: Doctrine
-            cleanup: true
+              depends: Doctrine
+              cleanup: true
         - \Support\Helper\Factories

@@ -6,10 +6,13 @@ use App\Domain\Bus\PublishTweetBusInterface;
 use App\Domain\Bus\SendNotificationBusInterface;
 use App\Domain\DTO\SendNotificationDTO;
 use App\Domain\Entity\EmailUser;
+use App\Domain\Entity\Subscription;
+use App\Domain\Entity\Tweet;
 use App\Domain\Entity\User;
 use App\Domain\Model\TweetModel;
 use App\Domain\ValueObject\CommunicationChannelEnum;
 use App\Infrastructure\Repository\FeedRepository;
+use App\Infrastructure\Repository\TweetRepository;
 
 class FeedService
 {
@@ -18,6 +21,7 @@ class FeedService
         private readonly SubscriptionService $subscriptionService,
         private readonly PublishTweetBusInterface $publishTweetBus,
         private readonly SendNotificationBusInterface $sendNotificationBus,
+        private readonly TweetRepository $tweetRepository,
     ) {
     }
 
@@ -51,5 +55,19 @@ class FeedService
             $follower instanceof EmailUser ? CommunicationChannelEnum::Email : CommunicationChannelEnum::Phone
         );
         $this->sendNotificationBus->sendNotification($sendNotificationDTO);
+    }
+
+    /**
+     * @return Tweet[]
+     */
+    public function getFeedWithoutMaterialization(User $user, int $count): array
+    {
+        return $this->tweetRepository->getTweetsForAuthorIds(
+            array_map(
+                static fn (Subscription $subscription): int => $subscription->getAuthor()->getId(),
+                $user->getSubscriptionAuthors()
+            ),
+            $count,
+        );
     }
 }
