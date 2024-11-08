@@ -22,3 +22,4 @@ security:
 
     access_control:
         - { path: ^/api/v2/user, roles: ROLE_ADMIN, methods: [POST] }
+        - { path: ^/api/doc, roles: ROLE_ADMIN }
