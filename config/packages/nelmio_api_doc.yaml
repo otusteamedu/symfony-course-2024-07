@@ -5,7 +5,7 @@ nelmio_api_doc:
             description: This is an awesome app!
             version: 1.0.0
     areas: # to filter documented areas
-        feed:
+        !php/const App\Application\OpenApi\ApiPlatformFactoryDecorator::FEED_AREA_NAME:
             path_patterns:
                 - ^/api/v1/get-feed
         default:

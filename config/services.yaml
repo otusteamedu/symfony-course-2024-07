@@ -191,3 +191,9 @@ services:
     App\Infrastructure\Repository\UserRepository:
         arguments:
             $finder: '@fos_elastica.finder.user'
+
+    App\Application\OpenApi\ApiPlatformFactoryDecorator:
+        decorates: 'api_platform.openapi.factory'
+        arguments:
+            - '@.inner'
+        autoconfigure: false
