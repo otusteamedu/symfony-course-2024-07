@@ -407,7 +407,7 @@
     
     namespace App\Application\Symfony;
     
-    use App\Infrastructure\Storage\MetricsStorage;
+    use App\StatsdBundle\MetricsStorage;
     use Psr\Cache\CacheItemInterface;
     use Psr\Cache\InvalidArgumentException;
     use Psr\Log\LoggerAwareInterface;

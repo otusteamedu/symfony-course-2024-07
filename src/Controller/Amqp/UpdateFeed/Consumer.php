@@ -8,14 +8,14 @@ use App\Domain\Entity\User;
 use App\Domain\Model\TweetModel;
 use App\Domain\Service\FeedService;
 use App\Domain\Service\UserService;
-use App\Infrastructure\Storage\MetricsStorage;
+use StatsdBundle\Storage\MetricsStorageInterface;
 
 class Consumer extends AbstractConsumer
 {
     public function __construct(
         private readonly FeedService $feedService,
         private readonly UserService $userService,
-        private readonly MetricsStorage $metricsStorage,
+        private readonly MetricsStorageInterface $metricsStorage,
         private readonly string $key,
     ) {
     }
