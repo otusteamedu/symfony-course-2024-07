@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b9803aea27ab1810279a1c4262b105d6",
+    "content-hash": "14ef999c8061775891119e13d66c92d3",
     "packages": [
         {
             "name": "api-platform/core",
@@ -2240,6 +2240,40 @@
                 }
             ],
             "time": "2021-11-18T09:23:29+00:00"
+        },
+        {
+            "name": "otusteamedu/statsd-bundle",
+            "version": "1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/otusteamedu/statsd-bundle.git",
+                "reference": "197a67875bd59284e1051362ae7fdcbd8c217988"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/otusteamedu/statsd-bundle/zipball/197a67875bd59284e1051362ae7fdcbd8c217988",
+                "reference": "197a67875bd59284e1051362ae7fdcbd8c217988",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=8.3",
+                "slickdeals/statsd": "^3.2"
+            },
+            "type": "symfony-bundle",
+            "autoload": {
+                "psr-4": {
+                    "StatsdBundle\\": "src/"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "description": "Provides configured MetricsStorage to send metrics to graphite",
+            "support": {
+                "source": "https://github.com/otusteamedu/statsd-bundle/tree/1.0",
+                "issues": "https://github.com/otusteamedu/statsd-bundle/issues"
+            },
+            "time": "2024-11-19T15:14:52+00:00"
         },
         {
             "name": "pagerfanta/pagerfanta",
@@ -12348,7 +12382,7 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {},
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
@@ -12356,6 +12390,6 @@
         "ext-ctype": "*",
         "ext-iconv": "*"
     },
-    "platform-dev": [],
+    "platform-dev": {},
     "plugin-api-version": "2.6.0"
 }

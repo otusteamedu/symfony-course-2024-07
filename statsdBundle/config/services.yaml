@@ -1,7 +1,0 @@
-services:
-
-  statsd.metrics_storage:
-    class: StatsdBundle\Storage\MetricsStorage
-
-  StatsdBundle\Storage\MetricsStorageInterface:
-    alias: 'statsd.metrics_storage'

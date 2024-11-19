@@ -102,6 +102,18 @@
             "config/routes/nelmio_api_doc.yaml"
         ]
     },
+    "otusteamedu/statsd-bundle": {
+        "version": "1.0",
+        "recipe": {
+            "repo": "github.com/otusteamedu/symfony-recipes/",
+            "branch": "main",
+            "version": "1.0",
+            "ref": "35e18ca78b9718d2afca62b3ec670ad36e77195c"
+        },
+        "files": [
+            "config/packages/statsd.yaml"
+        ]
+    },
     "php-amqplib/rabbitmq-bundle": {
         "version": "2.16",
         "recipe": {
