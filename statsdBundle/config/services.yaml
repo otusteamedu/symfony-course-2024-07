@@ -1,0 +1,11 @@
+services:
+
+  statsd.metrics_storage:
+    class: StatsdBundle\Storage\MetricsStorage
+    arguments:
+      - graphite
+      - 8125
+      - my_app
+
+  StatsdBundle\Storage\MetricsStorageInterface:
+    alias: 'statsd.metrics_storage'

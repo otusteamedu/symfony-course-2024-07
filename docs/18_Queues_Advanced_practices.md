@@ -1789,7 +1789,7 @@
     use App\Domain\Model\TweetModel;
     use App\Domain\Service\FeedService;
     use App\Domain\Service\UserService;
-    use App\Infrastructure\Storage\MetricsStorage;
+    use App\StatsdBundle\MetricsStorage;
     
     class Consumer extends AbstractConsumer
     {

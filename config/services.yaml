@@ -99,12 +99,6 @@ services:
     App\Domain\Repository\TweetRepositoryInterface:
         alias: App\Infrastructure\Repository\TweetRepositoryCacheDecorator
 
-    App\Infrastructure\Storage\MetricsStorage:
-        arguments:
-            - graphite
-            - 8125
-            - my_app
-
     redis_client:
         class: Redis
         factory: Symfony\Component\Cache\Adapter\RedisAdapter::createConnection
