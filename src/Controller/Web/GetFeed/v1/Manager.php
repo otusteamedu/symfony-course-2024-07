@@ -5,13 +5,13 @@ namespace App\Controller\Web\GetFeed\v1;
 use App\Controller\Web\GetFeed\v1\Output\Response;
 use App\Controller\Web\GetFeed\v1\Output\TweetDTO;
 use App\Domain\Entity\User;
-use FeedBundle\Domain\Service\FeedService;
+use App\Domain\Service\FeedServiceInterface;
 
 class Manager
 {
     private const DEFAULT_FEED_SIZE = 20;
 
-    public function __construct(private readonly FeedService $feedService)
+    public function __construct(private readonly FeedServiceInterface $feedService)
     {
     }
 

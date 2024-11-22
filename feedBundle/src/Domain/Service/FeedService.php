@@ -2,7 +2,6 @@
 
 namespace FeedBundle\Domain\Service;
 
-use App\Domain\Entity\User;
 use FeedBundle\Domain\Bus\SendNotificationBusInterface;
 use FeedBundle\Domain\DTO\SendNotificationDTO;
 use FeedBundle\Domain\Model\TweetModel;
@@ -16,9 +15,9 @@ class FeedService
     ) {
     }
 
-    public function ensureFeed(User $user, int $count): array
+    public function ensureFeed(int $userId, int $count): array
     {
-        $feed = $this->feedRepository->ensureFeedForReader($user->getId());
+        $feed = $this->feedRepository->ensureFeedForReader($userId);
 
         return $feed === null ? [] : array_slice($feed->getTweets(), -$count);
     }
