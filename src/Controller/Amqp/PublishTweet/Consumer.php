@@ -6,7 +6,9 @@ use App\Application\RabbitMq\AbstractConsumer;
 use App\Controller\Amqp\PublishTweet\Input\Message;
 use App\Domain\Bus\UpdateFeedBusInterface;
 use App\Domain\DTO\UpdateFeedDTO;
+use App\Domain\Entity\EmailUser;
 use App\Domain\Service\SubscriptionService;
+use App\Domain\ValueObject\CommunicationChannelEnum;
 
 class Consumer extends AbstractConsumer
 {
@@ -35,6 +37,8 @@ class Consumer extends AbstractConsumer
                 $message->text,
                 $message->createdAt,
                 $follower->getId(),
+                $follower instanceof EmailUser ?
+                    CommunicationChannelEnum::Email->value : CommunicationChannelEnum::Phone->value,
             );
             $this->updateFeedBus->sendUpdateFeedMessage($updateFeedDTO);
         }

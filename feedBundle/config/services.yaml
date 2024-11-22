@@ -12,3 +12,53 @@ services:
   FeedBundle\Infrastructure\Bus\RabbitMqBus:
     calls:
       - [ 'registerProducer', [ !php/enum FeedBundle\Infrastructure\Bus\AmqpExchangeEnum::SendNotification, '@old_sound_rabbit_mq.send_notification_producer' ] ]
+
+  FeedBundle\Controller\Amqp\UpdateFeed\Consumer0:
+    class: FeedBundle\Controller\Amqp\UpdateFeed\Consumer
+    arguments:
+      $key: 'update_feed_0'
+
+  FeedBundle\Controller\Amqp\UpdateFeed\Consumer1:
+    class: FeedBundle\Controller\Amqp\UpdateFeed\Consumer
+    arguments:
+      $key: 'update_feed_1'
+
+  FeedBundle\Controller\Amqp\UpdateFeed\Consumer2:
+    class: FeedBundle\Controller\Amqp\UpdateFeed\Consumer
+    arguments:
+      $key: 'update_feed_2'
+
+  FeedBundle\Controller\Amqp\UpdateFeed\Consumer3:
+    class: FeedBundle\Controller\Amqp\UpdateFeed\Consumer
+    arguments:
+      $key: 'update_feed_3'
+
+  FeedBundle\Controller\Amqp\UpdateFeed\Consumer4:
+    class: FeedBundle\Controller\Amqp\UpdateFeed\Consumer
+    arguments:
+      $key: 'update_feed_4'
+
+  FeedBundle\Controller\Amqp\UpdateFeed\Consumer5:
+    class: FeedBundle\Controller\Amqp\UpdateFeed\Consumer
+    arguments:
+      $key: 'update_feed_5'
+
+  FeedBundle\Controller\Amqp\UpdateFeed\Consumer6:
+    class: FeedBundle\Controller\Amqp\UpdateFeed\Consumer
+    arguments:
+      $key: 'update_feed_6'
+
+  FeedBundle\Controller\Amqp\UpdateFeed\Consumer7:
+    class: FeedBundle\Controller\Amqp\UpdateFeed\Consumer
+    arguments:
+      $key: 'update_feed_7'
+
+  FeedBundle\Controller\Amqp\UpdateFeed\Consumer8:
+    class: FeedBundle\Controller\Amqp\UpdateFeed\Consumer
+    arguments:
+      $key: 'update_feed_8'
+
+  FeedBundle\Controller\Amqp\UpdateFeed\Consumer9:
+    class: FeedBundle\Controller\Amqp\UpdateFeed\Consumer
+    arguments:
+      $key: 'update_feed_9'
