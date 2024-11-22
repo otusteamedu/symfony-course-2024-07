@@ -2,15 +2,14 @@
 
 namespace FeedBundle\Infrastructure\Repository;
 
-use App\Domain\Entity\Feed;
-use App\Domain\Entity\User;
+use FeedBundle\Domain\Entity\Feed;
 use FeedBundle\Domain\Model\TweetModel;
 
 class FeedRepository extends AbstractRepository
 {
-    public function putTweetToReaderFeed(TweetModel $tweet, User $reader): bool
+    public function putTweetToReaderFeed(TweetModel $tweet, int $readerId): bool
     {
-        $feed = $this->ensureFeedForReader($reader);
+        $feed = $this->ensureFeedForReader($readerId);
         if ($feed === null) {
             return false;
         }
@@ -22,13 +21,13 @@ class FeedRepository extends AbstractRepository
         return true;
     }
 
-    public function ensureFeedForReader(User $reader): ?Feed
+    public function ensureFeedForReader(int $readerId): ?Feed
     {
         $feedRepository = $this->entityManager->getRepository(Feed::class);
-        $feed = $feedRepository->findOneBy(['reader' => $reader]);
+        $feed = $feedRepository->findOneBy(['readerId' => $readerId]);
         if (!($feed instanceof Feed)) {
             $feed = new Feed();
-            $feed->setReader($reader);
+            $feed->setReaderId($readerId);
             $feed->setTweets([]);
             $this->store($feed);
         }

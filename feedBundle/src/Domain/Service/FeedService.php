@@ -29,7 +29,7 @@ class FeedService
 
     public function ensureFeed(User $user, int $count): array
     {
-        $feed = $this->feedRepository->ensureFeedForReader($user);
+        $feed = $this->feedRepository->ensureFeedForReader($user->getId());
 
         return $feed === null ? [] : array_slice($feed->getTweets(), -$count);
     }
@@ -50,7 +50,7 @@ class FeedService
 
     public function materializeTweet(TweetModel $tweet, User $follower): void
     {
-        $this->feedRepository->putTweetToReaderFeed($tweet, $follower);
+        $this->feedRepository->putTweetToReaderFeed($tweet, $follower->getId());
         $sendNotificationDTO = new SendNotificationDTO(
             $follower->getId(),
             $tweet->text,

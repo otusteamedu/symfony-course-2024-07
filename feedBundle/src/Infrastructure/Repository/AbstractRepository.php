@@ -2,7 +2,7 @@
 
 namespace FeedBundle\Infrastructure\Repository;
 
-use App\Domain\Entity\EntityInterface;
+use FeedBundle\Domain\Entity\EntityInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Exception\ORMException;
 
