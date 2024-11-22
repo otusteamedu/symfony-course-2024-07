@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Domain\Bus;
+namespace FeedBundle\Domain\Bus;
 
-use App\Domain\DTO\SendNotificationDTO;
+use FeedBundle\Domain\DTO\SendNotificationDTO;
 
 interface SendNotificationBusInterface
 {

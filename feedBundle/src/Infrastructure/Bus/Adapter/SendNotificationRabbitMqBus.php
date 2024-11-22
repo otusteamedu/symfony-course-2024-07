@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Infrastructure\Bus\Adapter;
+namespace FeedBundle\Infrastructure\Bus\Adapter;
 
-use App\Domain\Bus\SendNotificationBusInterface;
-use App\Domain\DTO\SendNotificationDTO;
-use App\Infrastructure\Bus\AmqpExchangeEnum;
-use App\Infrastructure\Bus\RabbitMqBus;
+use FeedBundle\Domain\Bus\SendNotificationBusInterface;
+use FeedBundle\Domain\DTO\SendNotificationDTO;
+use FeedBundle\Infrastructure\Bus\AmqpExchangeEnum;
+use FeedBundle\Infrastructure\Bus\RabbitMqBus;
 
 class SendNotificationRabbitMqBus implements SendNotificationBusInterface
 {
@@ -18,7 +18,7 @@ class SendNotificationRabbitMqBus implements SendNotificationBusInterface
         return $this->rabbitMqBus->publishToExchange(
             AmqpExchangeEnum::SendNotification,
             $sendNotificationDTO,
-            $sendNotificationDTO->channel->value
+            $sendNotificationDTO->channel
         );
     }
 }

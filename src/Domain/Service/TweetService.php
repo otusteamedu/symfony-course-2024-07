@@ -6,6 +6,8 @@ use App\Domain\Entity\Tweet;
 use App\Domain\Entity\User;
 use App\Domain\Model\TweetModel;
 use App\Domain\Repository\TweetRepositoryInterface;
+use FeedBundle\Domain\Model\TweetModel as FeedTweetModel;
+use FeedBundle\Domain\Service\FeedService;
 
 class TweetService
 {
@@ -22,16 +24,23 @@ class TweetService
         $tweet->setText($text);
         $author->addTweet($tweet);
         $this->tweetRepository->create($tweet);
-        $tweetModel = new TweetModel(
-            $tweet->getId(),
-            $tweet->getAuthor()->getLogin(),
-            $tweet->getAuthor()->getId(),
-            $tweet->getText(),
-            $tweet->getCreatedAt()
-        );
         if ($async) {
+            $tweetModel = new TweetModel(
+                $tweet->getId(),
+                $tweet->getAuthor()->getLogin(),
+                $tweet->getAuthor()->getId(),
+                $tweet->getText(),
+                $tweet->getCreatedAt()
+            );
             $this->feedService->spreadTweetAsync($tweetModel);
         } else {
+            $tweetModel = new FeedTweetModel(
+                $tweet->getId(),
+                $tweet->getAuthor()->getLogin(),
+                $tweet->getAuthor()->getId(),
+                $tweet->getText(),
+                $tweet->getCreatedAt()
+            );
             $this->feedService->spreadTweetSync($tweetModel);
         }
     }

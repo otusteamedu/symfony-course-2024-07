@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Infrastructure\Repository;
+namespace FeedBundle\Infrastructure\Repository;
 
 use App\Domain\Entity\Feed;
 use App\Domain\Entity\User;
-use App\Domain\Model\TweetModel;
+use FeedBundle\Domain\Model\TweetModel;
 
 class FeedRepository extends AbstractRepository
 {

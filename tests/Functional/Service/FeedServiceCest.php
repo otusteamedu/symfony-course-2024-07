@@ -5,7 +5,7 @@ namespace FunctionalTests\Service;
 use App\Domain\Entity\PhoneUser;
 use App\Domain\Entity\Subscription;
 use App\Domain\Entity\Tweet;
-use App\Domain\Service\FeedService;
+use FeedBundle\Domain\Service\FeedService;
 use App\Tests\Support\FunctionalTester;
 use Codeception\Example;
 

@@ -1,15 +1,13 @@
 <?php
 
-namespace App\Domain\DTO;
-
-use App\Domain\ValueObject\CommunicationChannelEnum;
+namespace FeedBundle\Domain\DTO;
 
 class SendNotificationDTO
 {
     public function __construct(
         public readonly int $userId,
         public readonly string $text,
-        public readonly CommunicationChannelEnum $channel,
+        public readonly string $channel,
     ) {
     }
 }

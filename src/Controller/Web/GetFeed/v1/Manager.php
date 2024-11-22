@@ -5,7 +5,7 @@ namespace App\Controller\Web\GetFeed\v1;
 use App\Controller\Web\GetFeed\v1\Output\Response;
 use App\Controller\Web\GetFeed\v1\Output\TweetDTO;
 use App\Domain\Entity\User;
-use App\Domain\Service\FeedService;
+use FeedBundle\Domain\Service\FeedService;
 
 class Manager
 {

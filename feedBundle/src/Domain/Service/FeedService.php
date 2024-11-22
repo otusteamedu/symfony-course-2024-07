@@ -1,18 +1,20 @@
 <?php
 
-namespace App\Domain\Service;
+namespace FeedBundle\Domain\Service;
 
 use App\Domain\Bus\PublishTweetBusInterface;
-use App\Domain\Bus\SendNotificationBusInterface;
-use App\Domain\DTO\SendNotificationDTO;
 use App\Domain\Entity\EmailUser;
 use App\Domain\Entity\Subscription;
 use App\Domain\Entity\Tweet;
 use App\Domain\Entity\User;
-use App\Domain\Model\TweetModel;
+use App\Domain\Model\TweetModel as DomainTweetModel;
+use App\Domain\Service\SubscriptionService;
 use App\Domain\ValueObject\CommunicationChannelEnum;
-use App\Infrastructure\Repository\FeedRepository;
 use App\Infrastructure\Repository\TweetRepository;
+use FeedBundle\Domain\Bus\SendNotificationBusInterface;
+use FeedBundle\Domain\DTO\SendNotificationDTO;
+use FeedBundle\Domain\Model\TweetModel;
+use FeedBundle\Infrastructure\Repository\FeedRepository;
 
 class FeedService
 {
@@ -32,7 +34,7 @@ class FeedService
         return $feed === null ? [] : array_slice($feed->getTweets(), -$count);
     }
 
-    public function spreadTweetAsync(TweetModel $tweet): void
+    public function spreadTweetAsync(DomainTweetModel $tweet): void
     {
         $this->publishTweetBus->sendPublishTweetMessage($tweet);
     }
@@ -52,7 +54,7 @@ class FeedService
         $sendNotificationDTO = new SendNotificationDTO(
             $follower->getId(),
             $tweet->text,
-            $follower instanceof EmailUser ? CommunicationChannelEnum::Email : CommunicationChannelEnum::Phone
+            $follower instanceof EmailUser ? CommunicationChannelEnum::Email->value : CommunicationChannelEnum::Phone->value
         );
         $this->sendNotificationBus->sendNotification($sendNotificationDTO);
     }
