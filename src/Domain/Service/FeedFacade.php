@@ -3,18 +3,18 @@
 namespace App\Domain\Service;
 
 use App\Domain\Entity\User;
-use FeedBundle\Domain\Service\FeedService;
+use App\Domain\Repository\FeedRepositoryInterface;
 
 class FeedFacade implements FeedServiceInterface
 {
     public function __construct(
-        private readonly FeedService $feedService,
+        private readonly FeedRepositoryInterface $feedRepository,
     ) {
 
     }
 
     public function ensureFeed(User $user, int $count): array
     {
-        return $this->feedService->ensureFeed($user->getId(), $count);
+        return $this->feedRepository->ensureFeed($user->getId(), $count);
     }
 }

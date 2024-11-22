@@ -140,3 +140,11 @@ services:
         arguments:
             - '@.inner'
         autoconfigure: false
+
+    feed_http_client:
+        class: GuzzleHttp\Client
+
+    App\Infrastructure\Repository\FeedRepository:
+        arguments:
+            - '@feed_http_client'
+            - 'http://nginx:80'
