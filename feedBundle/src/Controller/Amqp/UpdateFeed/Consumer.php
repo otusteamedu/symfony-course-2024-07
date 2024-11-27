@@ -6,6 +6,7 @@ use FeedBundle\Application\RabbitMq\AbstractConsumer;
 use FeedBundle\Domain\Model\TweetModel;
 use FeedBundle\Controller\Amqp\UpdateFeed\Input\Message;
 use FeedBundle\Domain\Service\FeedService;
+use RuntimeException;
 use StatsdBundle\Storage\MetricsStorageInterface;
 
 class Consumer extends AbstractConsumer
@@ -34,7 +35,11 @@ class Consumer extends AbstractConsumer
             $message->text,
             $message->createdAt,
         );
-        $this->feedService->materializeTweet($tweet, $message->followerId, $message->followerChannel);
+        try {
+            $this->feedService->materializeTweet($tweet, $message->followerId, $message->followerChannel);
+        } catch (RuntimeException) {
+            return self::MSG_REJECT_REQUEUE;
+        }
         $this->metricsStorage->increment($this->key);
 
         return self::MSG_ACK;
