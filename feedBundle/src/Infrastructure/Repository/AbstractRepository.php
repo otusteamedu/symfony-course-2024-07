@@ -5,6 +5,7 @@ namespace FeedBundle\Infrastructure\Repository;
 use FeedBundle\Domain\Entity\EntityInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Exception\ORMException;
+use Throwable;
 
 /**
  * @template T
@@ -38,5 +39,17 @@ abstract class AbstractRepository
     public function refresh(EntityInterface $entity): void
     {
         $this->entityManager->refresh($entity);
+    }
+
+    public function transactional(callable $callable): void
+    {
+        try {
+            $this->entityManager->getConnection()->beginTransaction();
+            $callable();
+            $this->entityManager->getConnection()->commit();
+        } catch (Throwable $e) {
+            $this->entityManager->getConnection()->rollBack();
+            throw $e;
+        }
     }
 }

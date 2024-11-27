@@ -65,7 +65,7 @@ class FeedBundle extends AbstractBundle
                         ],
                     ],
                     'routing' => [
-                        SendNotificationDTO::class => 'send_notification',
+                        SendNotificationDTO::class => 'doctrine',
                     ]
                 ],
             ],
