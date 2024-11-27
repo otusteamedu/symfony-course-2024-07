@@ -3,6 +3,7 @@
 namespace FeedBundle;
 
 use FeedBundle\Controller\Amqp\UpdateFeed\Consumer;
+use FeedBundle\Domain\DTO\SendNotificationAsyncDTO;
 use FeedBundle\Domain\DTO\SendNotificationDTO;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
@@ -66,6 +67,7 @@ class FeedBundle extends AbstractBundle
                     ],
                     'routing' => [
                         SendNotificationDTO::class => 'doctrine',
+                        SendNotificationAsyncDTO::class => 'send_notification',
                     ]
                 ],
             ],
