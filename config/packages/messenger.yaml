@@ -12,6 +12,7 @@ framework:
                     exchange:
                         name: 'old_sound_rabbit_mq.add_followers'
                         type: direct
+                serializer: 'messenger.transport.symfony_serializer'
             sync: 'sync://'
 
         routing:
