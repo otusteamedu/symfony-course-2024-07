@@ -148,3 +148,6 @@ services:
         arguments:
             - '@feed_http_client'
             - 'http://nginx:80'
+
+    App\Domain\Bus\AddFollowersBusInterface:
+        alias: App\Infrastructure\Bus\Adapter\AddFollowersMessengerBus
