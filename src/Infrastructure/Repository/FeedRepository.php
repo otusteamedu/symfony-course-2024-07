@@ -2,37 +2,26 @@
 
 namespace App\Infrastructure\Repository;
 
-use App\Domain\Entity\Feed;
-use App\Domain\Entity\User;
-use App\Domain\Model\TweetModel;
+use App\Domain\Repository\FeedRepositoryInterface;
+use GuzzleHttp\Client;
 
-class FeedRepository extends AbstractRepository
+class FeedRepository implements FeedRepositoryInterface
 {
-    public function putTweetToReaderFeed(TweetModel $tweet, User $reader): bool
-    {
-        $feed = $this->ensureFeedForReader($reader);
-        if ($feed === null) {
-            return false;
-        }
-        $tweets = $feed->getTweets();
-        $tweets[] = $tweet->toFeed();
-        $feed->setTweets($tweets);
-        $this->flush();
-
-        return true;
+    public function __construct(
+        private readonly Client $client,
+        private readonly string $baseUrl
+    ) {
     }
 
-    public function ensureFeedForReader(User $reader): ?Feed
+    public function ensureFeed(int $userId, int $count): array
     {
-        $feedRepository = $this->entityManager->getRepository(Feed::class);
-        $feed = $feedRepository->findOneBy(['reader' => $reader]);
-        if (!($feed instanceof Feed)) {
-            $feed = new Feed();
-            $feed->setReader($reader);
-            $feed->setTweets([]);
-            $this->store($feed);
-        }
+        $response = $this->client->get("{$this->baseUrl}/server-api/v1/get-feed/$userId", [
+            'query' => [
+                'count' => $count,
+            ],
+        ]);
+        $responseData = json_decode($response->getBody(), true);
 
-        return $feed;
+        return $responseData['tweets'];
     }
 }

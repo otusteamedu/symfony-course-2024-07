@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller\Amqp\UpdateFeed\Input;
+namespace FeedBundle\Controller\Amqp\UpdateFeed\Input;
 
 use DateTime;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -17,6 +17,7 @@ class Message
         public readonly DateTime $createdAt,
         #[Assert\Type('numeric')]
         public readonly int $followerId,
+        public readonly string $followerChannel,
     ) {
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Domain\Service;
 
+use App\Domain\Bus\PublishTweetBusInterface;
 use App\Domain\Entity\Tweet;
 use App\Domain\Entity\User;
 use App\Domain\Model\TweetModel;
@@ -11,11 +12,11 @@ class TweetService
 {
     public function __construct(
         private readonly TweetRepositoryInterface $tweetRepository,
-        private readonly FeedService $feedService,
+        private readonly PublishTweetBusInterface $publishTweetBus,
     ) {
     }
 
-    public function postTweet(User $author, string $text, bool $async): void
+    public function postTweet(User $author, string $text): void
     {
         $tweet = new Tweet();
         $tweet->setAuthor($author);
@@ -29,11 +30,7 @@ class TweetService
             $tweet->getText(),
             $tweet->getCreatedAt()
         );
-        if ($async) {
-            $this->feedService->spreadTweetAsync($tweetModel);
-        } else {
-            $this->feedService->spreadTweetSync($tweetModel);
-        }
+        $this->publishTweetBus->sendPublishTweetMessage($tweetModel);
     }
 
     /**
