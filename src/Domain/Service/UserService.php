@@ -9,6 +9,7 @@ use App\Domain\Event\CreateUserEvent;
 use App\Domain\Event\UserIsCreatedEvent;
 use App\Domain\Model\CreateUserModel;
 use App\Domain\ValueObject\CommunicationChannelEnum;
+use App\Domain\ValueObject\UserLogin;
 use App\Infrastructure\Repository\UserRepository;
 use DateInterval;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -29,7 +30,7 @@ class UserService
             CommunicationChannelEnum::Email => (new EmailUser())->setEmail($createUserModel->communicationMethod),
             CommunicationChannelEnum::Phone => (new PhoneUser())->setPhone($createUserModel->communicationMethod),
         };
-        $user->setLogin($createUserModel->login);
+        $user->setLogin(UserLogin::fromString($createUserModel->login));
         $user->setPassword($this->userPasswordHasher->hashPassword($user, $createUserModel->password));
         $user->setAge($createUserModel->age);
         $user->setIsActive($createUserModel->isActive);
@@ -43,7 +44,7 @@ class UserService
     public function createWithPhone(string $login, string $phone): User
     {
         $user = new PhoneUser();
-        $user->setLogin($login);
+        $user->setLogin(UserLogin::fromString($login));
         $user->setPhone($phone);
         $this->userRepository->create($user);
 
@@ -53,7 +54,7 @@ class UserService
     public function createWithEmail(string $login, string $email): User
     {
         $user = new EmailUser();
-        $user->setLogin($login);
+        $user->setLogin(UserLogin::fromString($login));
         $user->setEmail($email);
         $this->userRepository->create($user);
 

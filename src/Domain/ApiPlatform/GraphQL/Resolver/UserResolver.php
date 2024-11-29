@@ -5,6 +5,7 @@ namespace App\Domain\ApiPlatform\GraphQL\Resolver;
 use ApiPlatform\GraphQl\Resolver\QueryItemResolverInterface;
 use App\Domain\Entity\User;
 use App\Domain\Service\UserService;
+use App\Domain\ValueObject\UserLogin;
 
 class UserResolver implements QueryItemResolverInterface
 {
@@ -25,7 +26,7 @@ class UserResolver implements QueryItemResolverInterface
         }
 
         if ($item->isProtected()) {
-            $item->setLogin(self::MASK);
+            $item->setLogin(UserLogin::fromString(self::MASK));
             $item->setPassword(self::MASK);
         }
 

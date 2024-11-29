@@ -12,6 +12,7 @@ use App\Domain\ApiPlatform\GraphQL\Resolver\UserCollectionResolver;
 use App\Domain\ApiPlatform\GraphQL\Resolver\UserResolver;
 use App\Domain\ApiPlatform\State\UserProcessor;
 use App\Domain\ValueObject\RoleEnum;
+use App\Domain\ValueObject\UserLogin;
 use DateInterval;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -45,7 +46,7 @@ class User implements
     private ?int $id = null;
 
     #[Groups(['elastica'])]
-    private string $login;
+    private UserLogin $login;
 
     private DateTime $createdAt;
 
@@ -97,12 +98,12 @@ class User implements
         $this->id = $id;
     }
 
-    public function getLogin(): string
+    public function getLogin(): UserLogin
     {
         return $this->login;
     }
 
-    public function setLogin(string $login): void
+    public function setLogin(UserLogin $login): void
     {
         $this->login = $login;
     }
@@ -291,18 +292,18 @@ class User implements
             'updatedAt' => $this->updatedAt->format('Y-m-d H:i:s'),
             'tweets' => array_map(static fn(Tweet $tweet) => $tweet->toArray(), $this->tweets->toArray()),
             'followers' => array_map(
-                static fn(User $user) => ['id' => $user->getId(), 'login' => $user->getLogin()],
+                static fn(User $user) => ['id' => $user->getId(), 'login' => $user->getLogin()->getValue()],
                 $this->followers->toArray()
             ),
             'authors' => array_map(
-                static fn(User $user) => ['id' => $user->getId(), 'login' => $user->getLogin()],
+                static fn(User $user) => ['id' => $user->getId(), 'login' => $user->getLogin()->getValue()],
                 $this->authors->toArray()
             ),
             'subscriptionFollowers' => array_map(
                 static fn(Subscription $subscription) => [
                     'subscriptionId' => $subscription->getId(),
                     'userId' => $subscription->getFollower()->getId(),
-                    'login' => $subscription->getFollower()->getLogin(),
+                    'login' => $subscription->getFollower()->getLogin()->getValue(),
                 ],
                 $this->subscriptionFollowers->toArray()
             ),
@@ -310,7 +311,7 @@ class User implements
                 static fn(Subscription $subscription) => [
                     'subscriptionId' => $subscription->getId(),
                     'userId' => $subscription->getAuthor()->getId(),
-                    'login' => $subscription->getAuthor()->getLogin(),
+                    'login' => $subscription->getAuthor()->getLogin()->getValue(),
                 ],
                 $this->subscriptionAuthors->toArray()
             ),

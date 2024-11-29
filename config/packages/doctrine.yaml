@@ -10,6 +10,7 @@ doctrine:
         use_savepoints: true
         types:
             communicationChannel: App\Application\Doctrine\Types\CommunicationChannelType
+            userLogin: App\Application\Doctrine\Types\UserLoginType
     orm:
         auto_generate_proxy_classes: true
         enable_lazy_ghost_objects: true

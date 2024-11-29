@@ -22,7 +22,7 @@
         <id name="id" type="bigint">
             <generator strategy="IDENTITY" />
         </id>
-        <field name="login" type="string" length="32" nullable="false"/>
+        <field name="login" type="userLogin" length="32" nullable="false"/>
         <field name="password" type="string" nullable="false" />
         <field name="age" type="integer" nullable="false" />
         <field name="isActive" type="boolean" nullable="false" />

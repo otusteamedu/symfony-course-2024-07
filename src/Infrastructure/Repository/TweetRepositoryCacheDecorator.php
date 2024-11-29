@@ -43,7 +43,7 @@ class TweetRepositoryCacheDecorator implements TweetRepositoryInterface
                 $tweetModels = array_map(
                     static fn (Tweet $tweet): TweetModel => new TweetModel(
                         $tweet->getId(),
-                        $tweet->getAuthor()->getLogin(),
+                        $tweet->getAuthor()->getLogin()->getValue(),
                         $tweet->getAuthor()->getId(),
                         $tweet->getText(),
                         $tweet->getCreatedAt(),

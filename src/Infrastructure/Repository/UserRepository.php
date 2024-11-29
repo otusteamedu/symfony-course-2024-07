@@ -3,6 +3,7 @@
 namespace App\Infrastructure\Repository;
 
 use App\Domain\Entity\User;
+use App\Domain\ValueObject\UserLogin;
 use DateInterval;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\AbstractQuery;
@@ -66,7 +67,7 @@ class UserRepository extends AbstractRepository
 
     public function updateLogin(User $user, string $login): void
     {
-        $user->setLogin($login);
+        $user->setLogin(UserLogin::fromString($login));
         $this->flush();
     }
 

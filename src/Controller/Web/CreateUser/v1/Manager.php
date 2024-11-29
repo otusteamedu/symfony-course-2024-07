@@ -30,7 +30,7 @@ class Manager
 
         return new CreatedUserDTO(
             $user->getId(),
-            $user->getLogin(),
+            $user->getLogin()->getValue(),
             $user->getAvatarLink(),
             $user->getCreatedAt()->format('Y-m-d H:i:s'),
             $user->getUpdatedAt()->format('Y-m-d H:i:s'),
