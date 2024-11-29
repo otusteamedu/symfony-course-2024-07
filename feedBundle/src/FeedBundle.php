@@ -3,6 +3,8 @@
 namespace FeedBundle;
 
 use FeedBundle\Controller\Amqp\UpdateFeed\Consumer;
+use FeedBundle\Domain\DTO\SendNotificationAsyncDTO;
+use FeedBundle\Domain\DTO\SendNotificationDTO;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Symfony\Component\HttpKernel\Bundle\AbstractBundle;
@@ -48,6 +50,27 @@ class FeedBundle extends AbstractBundle
                     )
                 ),
             ]
+        );
+
+        $builder->prependExtensionConfig(
+            'framework',
+            [
+                'messenger' => [
+                    'transports' => [
+                        'send_notification' => [
+                            'dsn' => '%env(MESSENGER_AMQP_TRANSPORT_DSN)%',
+                            'options' => [
+                                'exchange' => ['name' => 'old_sound_rabbit_mq.send_notification', 'type' => 'topic'],
+                            ],
+                            'serializer' => 'messenger.transport.symfony_serializer',
+                        ],
+                    ],
+                    'routing' => [
+                        SendNotificationDTO::class => 'doctrine',
+                        SendNotificationAsyncDTO::class => 'send_notification',
+                    ]
+                ],
+            ],
         );
     }
 

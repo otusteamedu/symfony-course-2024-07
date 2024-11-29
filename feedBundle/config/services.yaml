@@ -62,3 +62,6 @@ services:
     class: FeedBundle\Controller\Amqp\UpdateFeed\Consumer
     arguments:
       $key: 'update_feed_9'
+
+  FeedBundle\Domain\Bus\SendNotificationBusInterface:
+    alias: FeedBundle\Infrastructure\Bus\Adapter\SendNotificationMessengerBus
