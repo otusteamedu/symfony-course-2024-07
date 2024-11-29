@@ -3,28 +3,17 @@
 namespace App\Domain\Entity;
 
 use DateTime;
-use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Table(name: 'email_notification')]
-#[ORM\Entity]
-#[ORM\HasLifecycleCallbacks]
 class EmailNotification implements EntityInterface
 {
-    #[ORM\Column(name: 'id', type: 'bigint', unique:true)]
-    #[ORM\Id]
-    #[ORM\GeneratedValue(strategy: 'IDENTITY')]
     private int $id;
 
-    #[ORM\Column(type: 'string', length: 128, nullable: false)]
     private string $email;
 
-    #[ORM\Column(type: 'string', length: 512, nullable: false)]
     private string $text;
 
-    #[ORM\Column(name: 'created_at', type: 'datetime', nullable: false)]
     private DateTime $createdAt;
 
-    #[ORM\Column(name: 'updated_at', type: 'datetime', nullable: false)]
     private DateTime $updatedAt;
 
     public function getId(): int
@@ -61,7 +50,6 @@ class EmailNotification implements EntityInterface
         return $this->createdAt;
     }
 
-    #[ORM\PrePersist]
     public function setCreatedAt(): void {
         $this->createdAt = new DateTime();
     }
@@ -70,8 +58,6 @@ class EmailNotification implements EntityInterface
         return $this->updatedAt;
     }
 
-    #[ORM\PrePersist]
-    #[ORM\PreUpdate]
     public function setUpdatedAt(): void {
         $this->updatedAt = new DateTime();
     }

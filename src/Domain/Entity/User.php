@@ -3,40 +3,23 @@
 namespace App\Domain\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
-use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GraphQl\Query;
 use ApiPlatform\Metadata\GraphQl\QueryCollection;
 use ApiPlatform\Metadata\Post;
-use App\Application\Doctrine\UserRepository;
 use App\Controller\Web\CreateUser\v2\Input\CreateUserDTO;
 use App\Controller\Web\CreateUser\v2\Output\CreatedUserDTO;
 use App\Domain\ApiPlatform\GraphQL\Resolver\UserCollectionResolver;
 use App\Domain\ApiPlatform\GraphQL\Resolver\UserResolver;
 use App\Domain\ApiPlatform\State\UserProcessor;
-use App\Domain\ApiPlatform\State\UserProviderDecorator;
-use App\Domain\ValueObject\CommunicationChannelEnum;
 use App\Domain\ValueObject\RoleEnum;
 use DateInterval;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Attribute\Groups;
 
-#[ORM\Table(name: '`user`')]
-#[ORM\Entity(repositoryClass: UserRepository::class)]
-#[ORM\HasLifecycleCallbacks]
-#[ORM\InheritanceType('SINGLE_TABLE')]
-#[ORM\DiscriminatorColumn(name: 'communication_channel', type: 'string', enumType: CommunicationChannelEnum::class)]
-#[ORM\DiscriminatorMap(
-    [
-        CommunicationChannelEnum::Email->value => EmailUser::class,
-        CommunicationChannelEnum::Phone->value => PhoneUser::class,
-    ]
-)]
-#[ORM\UniqueConstraint(name: 'user__login__uniq', columns: ['login'], options: ['where' => '(deleted_at IS NULL)'])]
 #[ApiResource(
     graphQlOperations: [
         new Query(),
@@ -58,63 +41,41 @@ class User implements
     UserInterface,
     PasswordAuthenticatedUserInterface
 {
-    #[ORM\Column(name: 'id', type: 'bigint', unique: true)]
-    #[ORM\Id]
-    #[ORM\GeneratedValue(strategy: 'IDENTITY')]
     #[Groups(['elastica'])]
     private ?int $id = null;
 
-    #[ORM\Column(type: 'string', length: 32, nullable: false)]
     #[Groups(['elastica'])]
     private string $login;
 
-    #[ORM\Column(name: 'created_at', type: 'datetime', nullable: false)]
     private DateTime $createdAt;
 
-    #[ORM\Column(name: 'updated_at', type: 'datetime', nullable: false)]
     private DateTime $updatedAt;
 
-    #[ORM\OneToMany(targetEntity: Tweet::class, mappedBy: 'author')]
     private Collection $tweets;
 
-    #[ORM\ManyToMany(targetEntity: 'User', mappedBy: 'followers')]
     private Collection $authors;
 
-    #[ORM\ManyToMany(targetEntity: 'User', inversedBy: 'authors')]
-    #[ORM\JoinTable(name: 'author_follower')]
-    #[ORM\JoinColumn(name: 'author_id', referencedColumnName: 'id')]
-    #[ORM\InverseJoinColumn(name: 'follower_id', referencedColumnName: 'id')]
     private Collection $followers;
 
-    #[ORM\OneToMany(mappedBy: 'follower', targetEntity: 'Subscription')]
     private Collection $subscriptionAuthors;
 
-    #[ORM\OneToMany(mappedBy: 'author', targetEntity: 'Subscription')]
     private Collection $subscriptionFollowers;
 
-    #[ORM\Column(name: 'deleted_at', type: 'datetime', nullable: true)]
     private ?DateTime $deletedAt = null;
 
-    #[ORM\Column(type: 'string', nullable: true)]
     private ?string $avatarLink = null;
 
-    #[ORM\Column(type: 'string', nullable: false)]
     private string $password;
 
-    #[ORM\Column(type: 'integer', nullable: false)]
     #[Groups(['elastica'])]
     private int $age;
 
-    #[ORM\Column(type: 'boolean', nullable: false)]
     private bool $isActive;
 
-    #[ORM\Column(type: 'json', length: 1024, nullable: false)]
     private array $roles = [];
 
-    #[ORM\Column(type: 'string', length: 32, unique: true, nullable: true)]
     private ?string $token = null;
 
-    #[ORM\Column(type: 'boolean', nullable: true)]
     private ?bool $isProtected;
 
     public function __construct()
@@ -150,7 +111,6 @@ class User implements
         return $this->createdAt;
     }
 
-    #[ORM\PrePersist]
     public function setCreatedAt(): void {
         $this->createdAt = DateTime::createFromFormat('U', (string)time());
     }
@@ -159,8 +119,6 @@ class User implements
         return $this->updatedAt;
     }
 
-    #[ORM\PrePersist]
-    #[ORM\PreUpdate]
     public function setUpdatedAt(): void {
         $this->updatedAt = DateTime::createFromFormat('U', (string)time());
     }
