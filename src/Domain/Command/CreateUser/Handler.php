@@ -22,7 +22,7 @@ class Handler
     ) {
     }
 
-    public function __invoke(Command $command): int
+    public function __invoke(Command $command): void
     {
         $user = match($command->createUserModel->communicationChannel) {
             CommunicationChannelEnum::Email => (new EmailUser())->setEmail($command->createUserModel->communicationMethod),
@@ -35,7 +35,5 @@ class Handler
         $user->setRoles($command->createUserModel->roles);
         $this->userRepository->create($user);
         $this->eventDispatcher->dispatch(new UserIsCreatedEvent($user->getId(), $user->getLogin()));
-
-        return $user->getId();
     }
 }

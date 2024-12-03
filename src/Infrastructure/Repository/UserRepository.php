@@ -41,7 +41,7 @@ class UserRepository extends AbstractRepository implements UserRepositoryInterfa
      */
     public function findUsersByLogin(string $name): array
     {
-        return $this->entityManager->getRepository(User::class)->findBy(['login' => $name]);
+        return $this->entityManager->getRepository(User::class)->findBy(['login' => UserLogin::fromString($name)]);
     }
 
 
