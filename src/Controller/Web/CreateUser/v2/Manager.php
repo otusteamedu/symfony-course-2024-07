@@ -4,12 +4,16 @@ namespace App\Controller\Web\CreateUser\v2;
 
 use App\Controller\Web\CreateUser\v2\Input\CreateUserDTO;
 use App\Controller\Web\CreateUser\v2\Output\CreatedUserDTO;
+use App\Domain\Command\CreateUser\Command;
 use App\Domain\Entity\EmailUser;
 use App\Domain\Entity\PhoneUser;
+use App\Domain\Entity\User;
 use App\Domain\Model\CreateUserModel;
 use App\Domain\Service\ModelFactory;
 use App\Domain\Service\UserService;
 use App\Domain\ValueObject\CommunicationChannelEnum;
+use Symfony\Component\Messenger\MessageBusInterface;
+use Symfony\Component\Messenger\Stamp\HandledStamp;
 
 class Manager implements ManagerInterface
 {
@@ -17,6 +21,7 @@ class Manager implements ManagerInterface
         /** @var ModelFactory<CreateUserModel> */
         private readonly ModelFactory $modelFactory,
         private readonly UserService $userService,
+        private readonly MessageBusInterface $messageBus,
     ) {
     }
 
@@ -34,7 +39,11 @@ class Manager implements ManagerInterface
             $createUserDTO->isActive,
             $createUserDTO->roles
         );
-        $user = $this->userService->create($createUserModel);
+        $envelope = $this->messageBus->dispatch(new Command($createUserModel));
+        /** @var HandledStamp|null $handledStamp */
+        $handledStamp = $envelope->last(HandledStamp::class);
+        /** @var User $user */
+        $user = $this->userService->findUserById($handledStamp?->getResult());
 
         return new CreatedUserDTO(
             $user->getId(),

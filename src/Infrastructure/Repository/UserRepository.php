@@ -3,6 +3,7 @@
 namespace App\Infrastructure\Repository;
 
 use App\Domain\Entity\User;
+use App\Domain\Repository\UserRepositoryInterface;
 use App\Domain\ValueObject\UserLogin;
 use DateInterval;
 use Doctrine\Common\Collections\Criteria;
@@ -14,7 +15,7 @@ use FOS\ElasticaBundle\Finder\PaginatedFinderInterface;
 /**
  * @extends AbstractRepository<User>
  */
-class UserRepository extends AbstractRepository
+class UserRepository extends AbstractRepository implements UserRepositoryInterface
 {
     public function __construct(
         EntityManagerInterface $entityManager,

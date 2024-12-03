@@ -21,3 +21,4 @@ framework:
 
         routing:
             App\Domain\DTO\AddFollowersDTO: add_followers
+            App\Domain\Command\CreateUser\Command: sync
