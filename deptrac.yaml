@@ -1,0 +1,43 @@
+imports:
+  - deptrac.baseline.yaml
+
+parameters:
+    paths:
+        - ./src
+        - ./feedBundle/src
+    exclude_files:
+        - '#.*test.*#'
+    layers:
+        - name: Controller
+          collectors:
+              - type: className
+                regex: ^App\\Controller.*
+        - name: Domain
+          collectors:
+              - type: className
+                regex: ^App\\Domain\\.*
+        - name: Infrastructure
+          collectors:
+              - type: className
+                regex: ^App\\Infrastructure\\.*
+        - name: Application
+          collectors:
+              - type: className
+                regex: ^App\\Application\\.*
+        - name: FeedBundle
+          collectors:
+              - type: className
+                regex: ^FeedBundle\\.*
+    ruleset:
+      Application:
+        - Domain
+        - Controller
+      Controller:
+        - Application
+        - Domain
+      Domain:
+        - Application
+      FeedBundle:
+      Infrastructure:
+          - Application
+          - Domain

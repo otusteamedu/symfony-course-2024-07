@@ -5,12 +5,11 @@ namespace App\Domain\Service;
 use App\Domain\Entity\EmailUser;
 use App\Domain\Entity\PhoneUser;
 use App\Domain\Entity\User;
-use App\Domain\Event\CreateUserEvent;
 use App\Domain\Event\UserIsCreatedEvent;
 use App\Domain\Model\CreateUserModel;
+use App\Domain\Repository\UserRepositoryInterface;
 use App\Domain\ValueObject\CommunicationChannelEnum;
 use App\Domain\ValueObject\UserLogin;
-use App\Infrastructure\Repository\UserRepository;
 use DateInterval;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
@@ -18,7 +17,7 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 class UserService
 {
     public function __construct(
-        private readonly UserRepository $userRepository,
+        private readonly UserRepositoryInterface $userRepository,
         private readonly UserPasswordHasherInterface $userPasswordHasher,
         private readonly EventDispatcherInterface $eventDispatcher,
     ) {
