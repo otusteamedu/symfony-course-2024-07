@@ -27,7 +27,7 @@ class Manager
     {
         $isNew = $user === null;
         $formData = $isNew ? null : new CreateUserDTO(
-            $user->getLogin(),
+            $user->getLogin()->getValue(),
             $user instanceof EmailUser ? $user->getEmail() : null,
             $user instanceof PhoneUser ? $user->getPhone() : null,
             $user->getPassword(),

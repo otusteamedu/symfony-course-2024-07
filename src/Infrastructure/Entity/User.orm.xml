@@ -1,0 +1,65 @@
+<doctrine-mapping
+        xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
+                            https://www.doctrine-project.org/schemas/orm/doctrine-mapping.xsd"
+>
+    <entity
+        name="App\Domain\Entity\User"
+        table="`user`"
+        repository-class="App\Application\Doctrine\UserRepository"
+        inheritance-type="SINGLE_TABLE"
+    >
+        <discriminator-column
+            name="communication_channel"
+            type="string"
+            enum-type="App\Domain\ValueObject\CommunicationChannelEnum"
+        />
+        <discriminator-map>
+            <discriminator-mapping value="email" class="App\Domain\Entity\EmailUser"/>
+            <discriminator-mapping value="phone" class="App\Domain\Entity\PhoneUser"/>
+        </discriminator-map>
+        <id name="id" type="bigint">
+            <generator strategy="IDENTITY" />
+        </id>
+        <field name="login" type="userLogin" length="32" nullable="false"/>
+        <field name="password" type="string" nullable="false" />
+        <field name="age" type="integer" nullable="false" />
+        <field name="isActive" type="boolean" nullable="false" />
+        <field name="createdAt" type="datetime" nullable="false" />
+        <field name="updatedAt" type="datetime" nullable="false" />
+        <field name="deletedAt" type="datetime" nullable="true" />
+        <field name="avatarLink" type="string" nullable="true" />
+        <one-to-many field="tweets" mapped-by="author" target-entity="App\Domain\Entity\Tweet" />
+        <many-to-many field="authors" mapped-by="followers" target-entity="App\Domain\Entity\User" />
+        <many-to-many field="followers" inversed-by="authors" target-entity="App\Domain\Entity\User">
+            <join-table name="author_follower">
+                <join-columns>
+                    <join-column name="author_id" referenced-column-name="id"/>
+                </join-columns>
+                <inverse-join-columns>
+                    <join-column name="follower_id" referenced-column-name="id"/>
+                </inverse-join-columns>
+            </join-table>
+        </many-to-many>
+        <one-to-many field="subscriptionAuthors" mapped-by="follower" target-entity="App\Domain\Entity\Subscription" />
+        <one-to-many field="subscriptionFollowers" mapped-by="author" target-entity="App\Domain\Entity\Subscription" />
+        <field name="roles" type="json" length="1024" nullable="false" />
+        <field name="token" type="string" length="32" unique="true" nullable="true" />
+        <field name="isProtected" type="boolean" nullable="true" />
+
+        <unique-constraints>
+            <unique-constraint name="user__login__uniq" columns="login">
+                <options>
+                    <option name="where">(deleted_at IS NULL)</option>
+                </options>
+            </unique-constraint>
+        </unique-constraints>
+
+        <lifecycle-callbacks>
+            <lifecycle-callback type="prePersist" method="setCreatedAt"/>
+            <lifecycle-callback type="prePersist" method="setUpdatedAt"/>
+            <lifecycle-callback type="preUpdate" method="setUpdatedAt"/>
+        </lifecycle-callbacks>
+    </entity>
+</doctrine-mapping>

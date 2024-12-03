@@ -25,7 +25,7 @@ class TweetService
         $this->tweetRepository->create($tweet);
         $tweetModel = new TweetModel(
             $tweet->getId(),
-            $tweet->getAuthor()->getLogin(),
+            $tweet->getAuthor()->getLogin()->getValue(),
             $tweet->getAuthor()->getId(),
             $tweet->getText(),
             $tweet->getCreatedAt()

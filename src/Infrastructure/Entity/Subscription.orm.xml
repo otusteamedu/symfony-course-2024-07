@@ -1,0 +1,32 @@
+<doctrine-mapping
+    xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
+                        https://www.doctrine-project.org/schemas/orm/doctrine-mapping.xsd"
+>
+    <entity name="App\Domain\Entity\Subscription" table="subscription">
+        <id name="id" type="bigint">
+            <generator strategy="IDENTITY" />
+        </id>
+        <many-to-one field="author" inversed-by="subscriptionFollowers" target-entity="App\Domain\Entity\User">
+            <join-column name="author_id" referenced-column-name="id" />
+        </many-to-one>
+        <many-to-one field="follower" inversed-by="subscriptionAuthors" target-entity="App\Domain\Entity\User">
+            <join-column name="follower_id" referenced-column-name="id" />
+        </many-to-one>
+        <field name="createdAt" type="datetime" nullable="false" />
+        <field name="updatedAt" type="datetime" nullable="false" />
+
+        <indexes>
+            <index name="subscription__author_id__ind" columns="author_id"/>
+            <index name="subscription__follower_id__ind" columns="follower_id"/>
+        </indexes>
+
+        <lifecycle-callbacks>
+            <lifecycle-callback type="prePersist" method="setCreatedAt"/>
+            <lifecycle-callback type="prePersist" method="setUpdatedAt"/>
+            <lifecycle-callback type="preUpdate" method="setUpdatedAt"/>
+        </lifecycle-callbacks>
+
+    </entity>
+</doctrine-mapping>

@@ -10,6 +10,7 @@ doctrine:
         use_savepoints: true
         types:
             communicationChannel: App\Application\Doctrine\Types\CommunicationChannelType
+            userLogin: App\Application\Doctrine\Types\UserLoginType
     orm:
         auto_generate_proxy_classes: true
         enable_lazy_ghost_objects: true
@@ -19,9 +20,9 @@ doctrine:
         auto_mapping: true
         mappings:
             App:
-                type: attribute
+                type: xml
                 is_bundle: false
-                dir: '%kernel.project_dir%/src/Domain/Entity'
+                dir: '%kernel.project_dir%/src/Infrastructure/Entity'
                 prefix: 'App\Domain\Entity'
                 alias: App
         controller_resolver:

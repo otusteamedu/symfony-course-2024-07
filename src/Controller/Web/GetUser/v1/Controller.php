@@ -17,7 +17,6 @@ class Controller
     }
 
     #[Route(path: 'api/v1/user', methods: ['GET'])]
-    #[IsGranted('ROLE_GET_LIST')]
     public function __invoke(Request $request): Response
     {
         $userId = $request->query->get('id');
