@@ -1,0 +1,27 @@
+deptrac:
+  skip_violations:
+    App\Domain\ApiPlatform\State\UserProcessor:
+      - App\Controller\Web\CreateUser\v2\Input\CreateUserDTO
+      - App\Controller\Web\CreateUser\v2\Manager
+      - App\Controller\Web\CreateUser\v2\Output\CreatedUserDTO
+    App\Domain\ApiPlatform\State\UserProviderDecorator:
+      - App\Controller\Web\CreateUser\v2\Output\CreatedUserDTO
+    App\Domain\Entity\EmailUser:
+      - App\Controller\Web\CreateUser\v2\Input\CreateUserDTO
+      - App\Controller\Web\CreateUser\v2\Output\CreatedUserDTO
+    App\Domain\Entity\PhoneUser:
+      - App\Controller\Web\CreateUser\v2\Input\CreateUserDTO
+      - App\Controller\Web\CreateUser\v2\Output\CreatedUserDTO
+    App\Domain\Entity\User:
+      - App\Controller\Web\CreateUser\v2\Input\CreateUserDTO
+      - App\Controller\Web\CreateUser\v2\Output\CreatedUserDTO
+    App\Domain\Service\EmailNotificationService:
+      - App\Infrastructure\Repository\EmailNotificationRepository
+    App\Domain\Service\FileService:
+      - App\Infrastructure\Storage\LocalFileStorage
+    App\Domain\Service\SmsNotificationService:
+      - App\Infrastructure\Repository\SmsNotificationRepository
+    App\Domain\Service\SubscriptionService:
+      - App\Infrastructure\Repository\SubscriptionRepository
+    App\Domain\Service\UserBuilderService:
+      - App\Infrastructure\Repository\UserRepository

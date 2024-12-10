@@ -4,13 +4,13 @@ namespace App\Domain\Service;
 
 use App\Domain\Entity\Subscription;
 use App\Domain\Entity\User;
+use App\Domain\Repository\UserRepositoryInterface;
 use App\Infrastructure\Repository\SubscriptionRepository;
-use App\Infrastructure\Repository\UserRepository;
 
 class SubscriptionService
 {
     public function __construct(
-        private readonly UserRepository $userRepository,
+        private readonly UserRepositoryInterface $userRepository,
         private readonly SubscriptionRepository $subscriptionRepository,
     ) {
     }
