@@ -69,7 +69,7 @@
     nodaemon=true
     
     [include]
-    files=/app/supervisor/*.conf
+    files=/app/docker/supervisor/*.conf
     ```
 3. Добавляем в `docker-compose.yml` сервис
     ```yaml
